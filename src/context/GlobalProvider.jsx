@@ -4,19 +4,19 @@ import { createContext, useContext, useState } from "react";
 const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [web3AuthProvider, setWeb3AuthProvider] = useState(null);
-  const [userInfo, setUserInfo] = useState();
+  const [account, setAccount] = useState("");
+  const [walletInstalled, setWalletInstalled] = useState(true);
+  const [provider, setProvider] = useState(null);
 
   return (
     <GlobalContext.Provider
       value={{
-        isLoggedIn,
-        setIsLoggedIn,
-        web3AuthProvider,
-        setWeb3AuthProvider,
-        userInfo,
-        setUserInfo,
+        account,
+        setAccount,
+        walletInstalled,
+        setWalletInstalled,
+        provider,
+        setProvider,
       }}
     >
       {children}
