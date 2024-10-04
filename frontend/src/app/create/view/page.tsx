@@ -6,8 +6,10 @@ import Toggler from "@/components/create/Toggler";
 export default function View() {
   return (
     <Container>
-      <Toggler />
-      <Replies />
+      <>
+        <Toggler />
+        <Replies />
+      </>
     </Container>
   );
 }
