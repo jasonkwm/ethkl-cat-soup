@@ -19,9 +19,12 @@ const CreateNavbar = () => {
 
       {/* Middle section */}
       <div className="flex space-x-4">
-        <button className="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 transition-colors">
+        <Link
+          href={"/create"}
+          className="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 transition-colors text-white no-underline"
+        >
           Dashboard
-        </button>
+        </Link>
         <button className="px-4 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-600 transition-colors">
           Create Survey
         </button>

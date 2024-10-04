@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 // Button (View)
@@ -55,14 +56,12 @@ const Dashboard = () => {
         >
           <span className="font-semibold text-lg">{survey.name}</span>
           <div className="flex flex-row gap-2">
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-              onClick={() => {
-                return;
-              }}
+            <Link
+              href={"/create/view"}
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-white no-underline"
             >
               View
-            </button>
+            </Link>
             <button
               className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
               onClick={() => {
