@@ -1,6 +1,6 @@
 "use client";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { Web3Auth } from "@web3auth/modal";
+import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { AuthAdapter } from "@web3auth/auth-adapter";
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK, UX_MODE } from "@web3auth/base";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
@@ -25,8 +25,8 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 interface Web3AuthContextType {
 	isLoggedIn: boolean;
 	setIsLoggedIn: (value: boolean) => void;
-	web3Auth: Web3Auth;
-	setWeb3Auth: (value: Web3Auth) => void;
+	web3Auth: Web3AuthNoModal;
+	setWeb3Auth: (value: Web3AuthNoModal) => void;
 	web3AuthProvider: IProvider | null;
 	setWeb3AuthProvider: (value: IProvider | null) => void;
 	userInfo: any;
@@ -34,9 +34,8 @@ interface Web3AuthContextType {
 }
 
 const Web3AuthContext = createContext<Web3AuthContextType | undefined>(undefined);
-const web3AuthInstance = new Web3Auth({
-	clientId:
-		"BL6jNtqT31zHotB7RUsEqMe3jL8RAfF0-ThCGHjXKYVd5PpYHSmAehv0IDvpPZ3YkcSf4qKWu_048U9LWfroM_Y",
+const web3AuthInstance = new Web3AuthNoModal({
+	clientId: "BAc5PRf-Nkjn-R-XkaNZH1mpEP4A-yVqun0G9eEa6YGb11_iT53AASOE1b80Og2R-z9cqu3s9MZw5l3FEgCccK8",
 	web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
 	privateKeyProvider,
 });
@@ -58,15 +57,7 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 		if (userInfo) return;
 		const init = async () => {
 			try {
-				await web3Auth.initModal();
-				const provider = await web3Auth.connect();
-				setWeb3AuthProvider(provider);
-				if (web3Auth.connected) {
-					const user = await web3Auth.getUserInfo();
-					setUserInfo(user);
-					setIsLoggedIn(true);
-					console.log("userInfo", userInfo);
-				}
+				// await web3Auth.initModal();
 				const authAdapter = new AuthAdapter({
 					loginSettings: {
 						mfaLevel: "optional",
@@ -75,9 +66,9 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 						uxMode: UX_MODE.REDIRECT,
 						loginConfig: {
 							jwt: {
-								verifier: "w3a-auth0-demo",
+								verifier: "worldcoin",
 								typeOfLogin: "jwt",
-								clientId: "hUVVf4SEsZT7syOiL0gLU9hFEtm2gQ6O",
+								clientId: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
 							},
 						},
 						mfaSettings: {
@@ -105,6 +96,15 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 					},
 				});
 				web3Auth.configureAdapter(authAdapter);
+				setWeb3Auth(web3Auth)
+				await web3Auth.init();
+				setWeb3AuthProvider(web3Auth.provider);
+				if (web3Auth.connected) {
+					const user = await web3Auth.getUserInfo();
+					setUserInfo(user);
+					setIsLoggedIn(true);
+					console.log("userInfo", userInfo);
+				}
 			} catch (error) {
 				console.error(error);
 			}
