@@ -1,13 +1,13 @@
 "use client";
 
-import { useWeb3Auth } from "@/context/Web3AuthProvider";
+import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
 
 export default function LogoutButton() {
-  const { web3Auth, setUserInfo, setProvider, setIsLoggedIn } = useWeb3Auth();
+  const { web3Auth, setUserInfo, setWeb3AuthProvider, setIsLoggedIn } = useWeb3AuthContext();
   const handleLogOut = async () => {
     await web3Auth.logout();
     setUserInfo(undefined);
-    setProvider(null);
+    setWeb3AuthProvider(null);
     setIsLoggedIn(false);
   };
 

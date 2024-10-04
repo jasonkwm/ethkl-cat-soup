@@ -25,8 +25,8 @@ interface Web3AuthContextType {
   setIsLoggedIn: (value: boolean) => void;
   web3Auth: Web3Auth;
   setWeb3Auth: (value: Web3Auth) => void;
-  provider: IProvider | null;
-  setProvider: (value: IProvider | null) => void;
+  web3AuthProvider: IProvider | null;
+  setWeb3AuthProvider: (value: IProvider | null) => void;
   userInfo: any;
   setUserInfo: (value: any) => void;
 }
@@ -49,7 +49,7 @@ const isConnected = async (web3auth: any) => {
 export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [web3Auth, setWeb3Auth] = useState(web3AuthInstance);
-  const [provider, setProvider] = useState<IProvider | null>(null);
+  const [web3AuthProvider, setWeb3AuthProvider] = useState<IProvider | null>(null);
   const [userInfo, setUserInfo] = useState<any>();
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
       try {
         await web3Auth.initModal();
         const provider = await web3Auth.connect();
-        setProvider(provider);
+        setWeb3AuthProvider(provider);
         if (web3Auth.connected) {
           const user = await web3Auth.getUserInfo();
           setUserInfo(user);
@@ -86,8 +86,8 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLoggedIn,
         web3Auth,
         setWeb3Auth,
-        provider,
-        setProvider,
+        web3AuthProvider,
+        setWeb3AuthProvider,
         userInfo,
         setUserInfo,
       }}
@@ -97,7 +97,7 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useWeb3Auth = (): Web3AuthContextType => {
+export const useWeb3AuthContext = (): Web3AuthContextType => {
   const context = useContext(Web3AuthContext);
   if (context === undefined) {
     throw new Error("useWeb3Auth must be used within a MyProvider");

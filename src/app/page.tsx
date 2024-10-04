@@ -1,8 +1,8 @@
 "use client";
-import { useWeb3Auth } from "@/context/Web3AuthProvider";
+import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
 import LogoutButton from "@/components/LogoutButton";
 export default function Home() {
-  const { isLoggedIn, userInfo } = useWeb3Auth();
+  const { isLoggedIn, userInfo } = useWeb3AuthContext();
   console.log("userInfo");
   if (!isLoggedIn && !userInfo) return;
   return (
