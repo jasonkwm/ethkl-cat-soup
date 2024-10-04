@@ -58,17 +58,17 @@ const Dashboard = () => {
           <div className="flex flex-row gap-2">
             <Link
               href={"/create/view"}
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-white no-underline"
+              className="px-4 py-2 bg-custom-dark-brown text-white rounded-lg hover:bg-custom-dark-brown transition-colors text-white no-underline"
             >
-              View
+              <img src="/eye.png" alt="crypto task" style={{ width: "25px"}}></img>
             </Link>
             <button
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              className="px-4 py-2 bg-custom-dark-brown text-white rounded-lg hover:bg-custom-dark-brown transition-colors"
               onClick={() => {
                 return;
               }}
             >
-              Requests
+              <img src="/bell.png" alt="crypto task" style={{ width: "25px"}}></img>
             </button>
           </div>
         </div>

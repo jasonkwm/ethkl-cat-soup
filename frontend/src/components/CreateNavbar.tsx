@@ -6,33 +6,27 @@ const CreateNavbar = () => {
   const shortenKey = (key: string) => `${key.slice(0, 6)}...${key.slice(-4)}`;
 
   return (
-    <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">
+    <nav className="flex justify-between items-center p-4 text-white">
       {/* Left section */}
       <div className="flex space-x-4">
         <Link
           href="/"
-          className="px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 transition-colors text-white no-underline"
+          className="px-4 py-2 rounded-lg transition-colors text-white no-underline"
         >
-          Home
+          <img src="/logo.png" width={500} height={500} alt="crypto task" style={{maxWidth: "20%"}}></img>
         </Link>
       </div>
-
-      {/* Middle section */}
       <div className="flex space-x-4">
-        <Link
+	  	<Link
           href={"/create"}
-          className="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 transition-colors text-white no-underline"
+          className="px-4 py-2 rounded-lg bg-white hover:bg-[#e4eaf5] transition-all text-black no-underline"
         >
-          Dashboard
+          <img src="/dashboard.png" alt="crypto task" style={{ width: "25px"}}></img>
         </Link>
-        <button className="px-4 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-600 transition-colors">
-          Create Survey
+        <button className="px-4 py-2 rounded-lg bg-white hover:bg-white-600 text-black transition-colors">
+			<img src="/tab.png" alt="crypto task" style={{ width: "25px"}}></img>
         </button>
-      </div>
-
-      {/* Right section */}
-      <div>
-        <button className="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 transition-colors">
+        <button className="px-4 py-2 rounded-lg bg-white hover:bg-white-600 text-black transition-colors">
           {shortenKey(publicKey)}
         </button>
       </div>
