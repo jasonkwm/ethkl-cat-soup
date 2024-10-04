@@ -7,8 +7,8 @@ const Toggler: React.FC = () => {
     <div className="flex text-center justify-between w-48 bg-slate-200 rounded-full">
       <button
         onClick={() => setIsReplies(true)}
-        className={`px-4 py-2 rounded-full bg-blue-500 hover:bg-blue-600 transition-colors text-white no-underline ${
-          isReplies ? "bg-gray-500 hover:bg-gray-500" : ""
+        className={`px-4 py-2 rounded-full bg-slate-200 transition-colors text-white no-underline ${
+          isReplies ? "!bg-blue-500 hover:bg-blue-500" : ""
         }`}
         disabled={isReplies}
       >
@@ -16,8 +16,8 @@ const Toggler: React.FC = () => {
       </button>
       <button
         onClick={() => setIsReplies(false)}
-        className={`px-4 py-2 rounded-full bg-blue-500 hover:bg-blue-600 transition-colors text-white no-underline ${
-          !isReplies ? "bg-gray-500 hover:bg-gray-500" : ""
+        className={`px-4 py-2 rounded-full bg-slate-200 transition-colors text-white no-underline ${
+          !isReplies ? "!bg-blue-500 hover:bg-blue-500" : ""
         }`}
         disabled={!isReplies}
       >
