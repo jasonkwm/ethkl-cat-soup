@@ -13,6 +13,10 @@ import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
 export default function Home() {
   const {account, setAccount, walletInstalled, setWalletInstalled, provider, setProvider} = useGlobalContext()
   const [error, setError] = useState("");
+  // const { isLoggedIn, userInfo } = useWeb3AuthContext();
+  // console.log("userInfo");
+
+  // if (!isLoggedIn && !userInfo) return;
 
   useEffect(() => {
     if(window.ethereum) {
