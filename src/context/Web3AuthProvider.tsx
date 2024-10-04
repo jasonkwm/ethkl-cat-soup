@@ -47,6 +47,7 @@ const isConnected = async (web3auth: any) => {
 	return web3auth.status === "connected";
 };
 
+
 export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [web3Auth, setWeb3Auth] = useState(web3AuthInstance);
@@ -118,6 +119,119 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 			setIsLoggedIn(true);
 		}
 	}, [web3Auth]);
+
+	//WARN: --------------------------------------------------------------------------------------
+	const login = async () => {
+		if (!web3Auth) {
+			uiConsole("web3Auth not initialized yet");
+			return;
+		}
+		const web3authProvider = await web3Auth.connectTo(WALLET_ADAPTERS.AUTH, {
+			loginProvider: "jwt",
+			extraLoginOptions: {
+				domain: "https://web3Auth.au.auth0.com",
+				verifierIdField: "email",
+				// connection: "google-oauth2", // Use this to skip Auth0 Modal for Google login.
+			},
+		});
+		setWeb3AuthProvider(web3authProvider);
+	};
+
+	const authenticateUser = async () => {
+		if (!web3Auth) {
+			uiConsole("web3Auth not initialized yet");
+			return;
+		}
+		const idToken = await web3Auth.authenticateUser();
+		uiConsole(idToken);
+	};
+
+	const getUserInfo = async () => {
+		if (!web3Auth) {
+			uiConsole("web3Auth not initialized yet");
+			return;
+		}
+		const user = await web3Auth.getUserInfo();
+		uiConsole(user);
+	};
+
+	const logout = async () => {
+		if (!web3Auth) {
+			uiConsole("web3Auth not initialized yet");
+			return;
+		}
+		await web3Auth.logout();
+		setIsLoggedIn(false);
+		setWeb3AuthProvider(null);
+	};
+
+	const getChainId = async () => {
+		if (!web3AuthProvider) {
+			uiConsole("web3AuthProvider not initialized yet");
+			return;
+		}
+		const rpc = new RPC(web3AuthProvider);
+		const chainId = await rpc.getChainId();
+		uiConsole(chainId);
+	};
+	const getAccounts = async () => {
+		if (!web3AuthProvider) {
+			uiConsole("web3AuthProvider not initialized yet");
+			return;
+		}
+		const rpc = new RPC(web3AuthProvider);
+		const address = await rpc.getAccounts();
+		uiConsole(address);
+	};
+
+	const getBalance = async () => {
+		if (!web3AuthProvider) {
+			uiConsole("web3AuthProvider not initialized yet");
+			return;
+		}
+		const rpc = new RPC(web3AuthProvider);
+		const balance = await rpc.getBalance();
+		uiConsole(balance);
+	};
+
+	const sendTransaction = async () => {
+		if (!web3AuthProvider) {
+			uiConsole("web3AuthProvider not initialized yet");
+			return;
+		}
+		const rpc = new RPC(web3AuthProvider);
+		const receipt = await rpc.sendTransaction();
+		uiConsole(receipt);
+	};
+
+	const signMessage = async () => {
+		if (!web3AuthProvider) {
+			uiConsole("web3AuthProvider not initialized yet");
+			return;
+		}
+		const rpc = new RPC(web3AuthProvider);
+		const signedMessage = await rpc.signMessage();
+		uiConsole(signedMessage);
+	};
+
+	function uiConsole(...args: any[]): void {
+		const el = document.querySelector("#console>p");
+		if (el) {
+			el.innerHTML = JSON.stringify(args || {}, null, 2);
+		}
+	}
+
+	const getPrivateKey = async () => {
+		if (!web3AuthProvider) {
+			uiConsole("web3AuthProvider not initialized yet");
+			return;
+		}
+		const rpc = new RPC(web3AuthProvider);
+		const privateKey = await rpc.getPrivateKey();
+		uiConsole(privateKey);
+	};
+
+//WARN: -------------------------------------------------------------------------------------------------------------
 
 	return (
 		<Web3AuthContext.Provider

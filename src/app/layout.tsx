@@ -37,7 +37,7 @@ export default function RootLayout({
           {children}
         </body>
 			</UserProvider>
-      </Web3AuthProvider>
+			</Web3AuthProvider>
       </GlobalProvider>
     </html>
   );
