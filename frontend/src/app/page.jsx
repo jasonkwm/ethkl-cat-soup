@@ -7,7 +7,7 @@ import Badge from "react-bootstrap/Badge";
 import { Web3 } from "web3";
 import Image from "next/image.js";
 import { useState, useEffect } from "react";
-import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
+// import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
 
 
 
