@@ -6,10 +6,17 @@ import Alert from "react-bootstrap/Alert";
 import Badge from "react-bootstrap/Badge";
 import { Web3 } from "web3";
 import { useState, useEffect } from "react";
+import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
+
+
 
 export default function Home() {
   const {account, setAccount, walletInstalled, setWalletInstalled, provider, setProvider} = useGlobalContext()
   const [error, setError] = useState("");
+  // const { isLoggedIn, userInfo } = useWeb3AuthContext();
+  // console.log("userInfo");
+
+  // if (!isLoggedIn && !userInfo) return;
 
   useEffect(() => {
     if(window.ethereum) {
