@@ -1,17 +1,16 @@
-import Container from 'react-bootstrap/Container';
-import Card from 'react-bootstrap/Card';
-import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
-import Link from 'next/link'
+import { Container } from "react-bootstrap";
+import Card from "react-bootstrap/Card";
+import Row from "react-bootstrap/Row";
+import Button from "react-bootstrap/Button";
+import Link from "next/link";
 
-
-export function SelectionScreen ({provider}) {
-    return (
+export function SelectionScreen({ provider }) {
+  return (
     // <Container>
     //     <Row>
     //         <Card className="my-2" >
     //             <Card.Body>
-                    
+
     //                 <Card.Title><Link onClick={()=>console.log("hello")}>Record Management</Link></Card.Title>
     //             </Card.Body>
     //         </Card>
@@ -28,5 +27,5 @@ export function SelectionScreen ({provider}) {
     //     </Row>
     // </Container>
     <p>hello</p>
-    )
+  );
 }
