@@ -12,10 +12,10 @@ export default function Home() {
   const [walletInstalled, setWalletInstalled] = useState(true)
   const [error, setError] = useState("")
   const [provider, setProvider] = useState("")
-  const { isLoggedIn, userInfo } = useWeb3AuthContext();
-  console.log("userInfo");
+  // const { isLoggedIn, userInfo } = useWeb3AuthContext();
+  // console.log("userInfo");
   
-  if (!isLoggedIn && !userInfo) return;
+  // if (!isLoggedIn && !userInfo) return;
   
   useEffect(()=>{
     window.ethereum? setWalletInstalled(true):setWalletInstalled(false)
