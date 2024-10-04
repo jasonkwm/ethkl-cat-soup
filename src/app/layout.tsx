@@ -27,13 +27,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* <Web3AuthProvider> */}
       <GlobalProvider>
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           {children}
         </body>
       </GlobalProvider>
-      {/* </Web3AuthProvider> */}
     </html>
   );
 }
