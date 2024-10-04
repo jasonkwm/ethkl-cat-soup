@@ -31,9 +31,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <GlobalProvider>
+		<head>
+			<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet"/>
+		</head>
       <Web3AuthProvider>
 			<UserProvider>
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+			<body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-custom flex w-full`}>
           {children}
         </body>
 			</UserProvider>
@@ -42,3 +45,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+

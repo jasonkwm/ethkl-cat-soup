@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import Badge from "react-bootstrap/Badge";
 import { Web3 } from "web3";
+import Image from "next/image.js";
 import { useState, useEffect } from "react";
 import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
 
@@ -31,7 +32,11 @@ export default function Home() {
   },[]);
 
   return (
-    <div className="container">
+<div className="w-90 mx-auto">
+<div className="border-bottom primary-dark">
+	<Image src="/logo.png" width={500} height={500} alt="crypto task" style={{maxWidth: "10%"}}></Image>
+</div>
+  <div className="d-flex flex-column justify-content-center vh-100 align-items-center">
       {account? <h5 className="d-flex justify-content-end mt-3"><Badge>{account.slice(0, 7) + "....." + account.slice(-5)}</Badge></h5>:null}
       <div className="d-flex flex-column justify-content-center align-items-center" style={{height:"80vh"}}>
         {provider? (
@@ -66,5 +71,6 @@ export default function Home() {
         )}
         {error ? <Alert className="warning">{error}</Alert> : null}
     </div>
-  </div>
+	</div>
+	</div>
 )}
