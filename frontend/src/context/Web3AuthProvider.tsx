@@ -31,6 +31,13 @@ interface Web3AuthContextType {
 	setWeb3AuthProvider: (value: IProvider | null) => void;
 	userInfo: any;
 	setUserInfo: (value: any) => void;
+	signMessage: any;
+	getAccounts: any;
+	getPrivateKey: any;
+	sendTransaction: any;
+	getBalance: any;
+	getUserInfo: any;
+	login: any;
 }
 
 const Web3AuthContext = createContext<Web3AuthContextType | undefined>(undefined);
@@ -56,6 +63,8 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	useEffect(() => {
 		if (userInfo) return;
+		console.log("_______________________________________________________")
+		console.log(process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID)
 		const init = async () => {
 			try {
 				// await web3Auth.initModal();
@@ -67,7 +76,7 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 						uxMode: UX_MODE.REDIRECT,
 						loginConfig: {
 							jwt: {
-								verifier: "worldcoin",
+								verifier: "web3auth-world-id-verifier",
 								typeOfLogin: "jwt",
 								clientId: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
 							},
@@ -104,7 +113,7 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 					const user = await web3Auth.getUserInfo();
 					setUserInfo(user);
 					setIsLoggedIn(true);
-					console.log("userInfo", userInfo);
+					console.log("userInfo", user);
 				}
 			} catch (error) {
 				console.error(error);
@@ -129,12 +138,23 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 		const web3authProvider = await web3Auth.connectTo(WALLET_ADAPTERS.AUTH, {
 			loginProvider: "jwt",
 			extraLoginOptions: {
-				domain: "https://web3Auth.au.auth0.com",
-				verifierIdField: "email",
+				domain: process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL,
+				verifierIdField: "sub",
+				connection: "worldcoin",
 				// connection: "google-oauth2", // Use this to skip Auth0 Modal for Google login.
 			},
 		});
 		setWeb3AuthProvider(web3authProvider);
+	};
+
+	const logout = async () => {
+		if (!web3Auth) {
+			uiConsole("web3Auth not initialized yet");
+			return;
+		}
+		await web3Auth.logout();
+		setIsLoggedIn(false);
+		setWeb3AuthProvider(null);
 	};
 
 	const authenticateUser = async () => {
@@ -155,16 +175,6 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 		uiConsole(user);
 	};
 
-	const logout = async () => {
-		if (!web3Auth) {
-			uiConsole("web3Auth not initialized yet");
-			return;
-		}
-		await web3Auth.logout();
-		setIsLoggedIn(false);
-		setWeb3AuthProvider(null);
-	};
-
 	const getChainId = async () => {
 		if (!web3AuthProvider) {
 			uiConsole("web3AuthProvider not initialized yet");
@@ -174,6 +184,7 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 		const chainId = await rpc.getChainId();
 		uiConsole(chainId);
 	};
+
 	const getAccounts = async () => {
 		if (!web3AuthProvider) {
 			uiConsole("web3AuthProvider not initialized yet");
@@ -228,6 +239,7 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 		}
 		const rpc = new RPC(web3AuthProvider);
 		const privateKey = await rpc.getPrivateKey();
+		console.log(privateKey)
 		uiConsole(privateKey);
 	};
 
@@ -244,6 +256,13 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 				setWeb3AuthProvider,
 				userInfo,
 				setUserInfo,
+				signMessage,
+				getAccounts,
+				getPrivateKey,
+				sendTransaction,
+				getBalance,
+				getUserInfo,
+				login,
 			}}
 		>
 			{children}
