@@ -1,25 +1,26 @@
 "use client";
-import React, { useState } from "react";
+import { useSurveyorContext } from "@/context/SurveyorProvider";
+import React from "react";
 
 const Toggler: React.FC = () => {
-  const [isReplies, setIsReplies] = useState(true);
+  const { toggleReplies, setToggleReplies } = useSurveyorContext();
   return (
     <div className="flex text-center justify-between w-48 bg-slate-200 rounded-full">
       <button
-        onClick={() => setIsReplies(true)}
+        onClick={() => setToggleReplies(true)}
         className={`px-4 py-2 rounded-full bg-slate-200 transition-colors text-white no-underline ${
-          isReplies ? "!bg-blue-500 hover:bg-blue-500" : ""
+          toggleReplies ? "!bg-blue-500 hover:bg-blue-500" : ""
         }`}
-        disabled={isReplies}
+        disabled={toggleReplies}
       >
         Replies
       </button>
       <button
-        onClick={() => setIsReplies(false)}
+        onClick={() => setToggleReplies(false)}
         className={`px-4 py-2 rounded-full bg-slate-200 transition-colors text-white no-underline ${
-          !isReplies ? "!bg-blue-500 hover:bg-blue-500" : ""
+          !toggleReplies ? "!bg-blue-500 hover:bg-blue-500" : ""
         }`}
-        disabled={!isReplies}
+        disabled={!toggleReplies}
       >
         Requests
       </button>
