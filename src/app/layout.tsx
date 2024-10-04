@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-// import { Web3AuthProvider } from "@/context/Web3AuthProvider";
+import { GlobalProvider } from "@/context/GlobalProvider";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const geistSans = localFont({
@@ -28,7 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       {/* <Web3AuthProvider> */}
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+      <GlobalProvider>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          {children}
+        </body>
+      </GlobalProvider>
       {/* </Web3AuthProvider> */}
     </html>
   );
