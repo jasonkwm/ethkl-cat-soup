@@ -1,3 +1,4 @@
+import CryptoSurvey from "@/contract/CryptoSurvey";
 import type { IProvider } from "@web3auth/base";
 import Web3 from "web3";
 
@@ -33,6 +34,31 @@ export default class EthereumRpc {
       return error;
     }
   }
+
+	async contractInteract(): Promise<any> {
+		const web3 = new Web3(this.provider as any);
+
+		const abi = CryptoSurvey.abi;
+		const deployedAddress = CryptoSurvey.address;
+		const myContract = new web3.eth.Contract(abi, deployedAddress);
+		const accounts = await web3.eth.getAccounts();
+		const defaultAccount = accounts[0];
+
+		try {
+			// Get the current value of my number
+			const myNumber = await myContract.methods.myNumber().call();
+			console.log("myNumber value: " + myNumber);
+
+			// Increment my number
+			const receipt = await myContract.methods
+				.setMyNumber(BigInt(myNumber) + 1n)
+				.send({
+					from: defaultAccount,
+					gas: 1000000,
+					gasPrice: "10000000000",
+				});
+		}
+	}
 
   async getBalance(): Promise<string> {
     try {
