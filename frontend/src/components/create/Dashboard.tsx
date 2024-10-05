@@ -1,5 +1,6 @@
 "use client";
 
+import { useSurveyorContext } from "@/context/SurveyorProvider";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -18,61 +19,71 @@ type SurveyDetailsType = {
   incentive: number;
 };
 
-const dummySurvey: SurveyDetailsType[] = [
-  {
-    pollId: 1,
-    name: "Customer Satisfaction Survey",
-    description: "tomato lorem something something a very long description",
-    image: "",
-    marketReply: 300,
-    incentive: 2,
-  },
-  {
-    pollId: 2,
-    name: "Employee Feedback Survey",
-    description: "tomato lorem something something a very long description",
-    image: "",
-    marketReply: 100,
-    incentive: 3,
-  },
-  {
-    pollId: 3,
-    name: "Product Research Survey",
-    description: "tomato lorem something something a very long description",
-    image: "",
-    marketReply: 700,
-    incentive: 1,
-  },
-];
-
 const Dashboard = () => {
-  const [surveyList, setSurveyList] = useState<SurveyDetailsType[]>(dummySurvey);
+  const { surveyList, setToggleReplies } = useSurveyorContext();
+  console.log(surveyList);
   return (
-    <div className="space-y-4">
-      {surveyList.map((survey: SurveyDetailsType) => (
-        <div
-          key={survey.pollId}
-          className="flex justify-between items-center p-4 bg-gray-100 rounded-lg shadow-md"
-        >
-          <span className="font-semibold text-lg">{survey.name}</span>
-          <div className="flex flex-row gap-2">
-            <Link
-              href={"/create/view"}
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-white no-underline"
-            >
-              View
-            </Link>
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-              onClick={() => {
-                return;
-              }}
-            >
-              Requests
-            </button>
+    <div>
+      <h4 className="text-left">Dashboard</h4>
+      <p className="italic">A dashboard to organize and present all your created surveys</p>
+      <div className="space-y-4">
+        {surveyList.map((survey: SurveyDetailsType) => (
+          <div
+            key={survey.pollId}
+            className="flex justify-between items-center p-4 bg-gray-100 rounded-lg shadow-md "
+          >
+            {/* <img src={survey.image} alt="crypto task" style={{ width: "25px"}}></img> */}
+            <div>
+              <div className="flex">
+                <img src="browser.png" alt="crypto task" style={{ width: "25px" }}></img>
+                <span className="ptext-lg" style={{ paddingLeft: "10px" }}>
+                  {survey.name}
+                </span>
+              </div>
+              <div className="flex">
+                <img
+                  src="information.png"
+                  alt="crypto task"
+                  style={{ width: "25px", height: "25px" }}
+                ></img>
+                <p style={{ paddingLeft: "10px" }}>{survey.description}</p>
+              </div>
+            </div>
+            <div>
+              <img
+                src="email.png"
+                alt="crypto task"
+                style={{ width: "25px", height: "25px" }}
+              ></img>
+              <p className="text-center">{survey.marketReply}</p>
+            </div>
+            <div>
+              <img
+                src="dollar.png"
+                alt="crypto task"
+                style={{ width: "25px", height: "25px" }}
+              ></img>
+              <p className="text-center">{survey.incentive}</p>
+            </div>
+            <div className="flex flex-row gap-2">
+              <Link
+                href={"/surveyor/view"}
+                onClick={() => setToggleReplies(true)}
+                className="px-4 py-2 bg-custom-dark-brown text-white rounded-lg hover:bg-custom-dark-brown transition-colors text-white no-underline"
+              >
+                <img src="/eye.png" alt="crypto task" style={{ width: "25px" }}></img>
+              </Link>
+              <Link
+                href={"/surveyor/view"}
+                className="px-4 py-2 bg-custom-dark-brown text-white rounded-lg hover:bg-custom-dark-brown transition-colors"
+                onClick={() => setToggleReplies(false)}
+              >
+                <img src="/bell.png" alt="crypto task" style={{ width: "25px" }}></img>
+              </Link>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
