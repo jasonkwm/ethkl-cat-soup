@@ -3,7 +3,7 @@ export function downloadIPFS(decrypted) {
   fetch(ipfsUrl)
     .then((response) => {
       if (!response.ok) {
-        setError("Network response was not ok");
+        console.error("Network response was not ok");
       }
       return response.json();
     })
@@ -13,6 +13,6 @@ export function downloadIPFS(decrypted) {
     })
 
     .catch((error) => {
-      setError("Error downloading file:" + error);
+      console.error("Error downloading file:" + error);
     });
 }
