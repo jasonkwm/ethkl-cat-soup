@@ -6,7 +6,7 @@ const CreateNavbar = () => {
   const shortenKey = (key: string) => `${key.slice(0, 6)}...${key.slice(-4)}`;
 
   return (
-    <nav className="flex justify-between items-center p-4 text-white">
+    <nav className="flex justify-between items-center text-white" style={{border: "black solid 0.5px", borderRadius: "30px 30px 0px 0px", paddingRight: "25px"}}>
       {/* Left section */}
       <div className="flex space-x-4">
         <Link
