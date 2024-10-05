@@ -5,6 +5,9 @@ import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
 export default function LogoutButton() {
   const { web3Auth, setUserInfo, setWeb3AuthProvider, setIsLoggedIn } = useWeb3AuthContext();
   const handleLogOut = async () => {
+		if (!web3Auth) {
+			console.log("Web3AuthProvider not initialized yet.")
+		}
     await web3Auth.logout();
     setUserInfo(undefined);
     setWeb3AuthProvider(null);
