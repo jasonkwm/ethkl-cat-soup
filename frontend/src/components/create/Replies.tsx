@@ -59,7 +59,7 @@ export default function Replies() {
     incentive: 2,
   });
   return (
-    <div className="m-auto max-w-[92%] p-6 bg-white rounded-lg shadow-lg mt-4">
+    <div className="m-auto w-[92%] p-6 bg-white rounded-lg shadow-lg mt-4">
       <h1 className="text-2xl font-bold mb-4 text-gray-800 text-center">{survey.name}</h1>
       <p className="text-lg text-gray-600">{survey.description}</p>
       <div className="max-w-lg mx-auto p-4">

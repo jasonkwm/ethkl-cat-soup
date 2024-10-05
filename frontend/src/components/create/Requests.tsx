@@ -19,7 +19,7 @@ export default function Requests() {
   };
 
   return (
-    <div className="m-auto max-w-[92%] p-6 bg-white rounded-lg shadow-lg mt-4">
+    <div className="m-auto w-[92%] p-6 bg-white rounded-lg shadow-lg mt-4">
       <h1 className="text-2xl font-bold mb-4 text-gray-800 text-center">Survey User Requests</h1>
       <ul className="space-y-4">
         {requestList.map((request: any, index: any) => (
