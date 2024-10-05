@@ -20,7 +20,7 @@ const config: Config = {
         'gradient-custom': 'linear-gradient(to right, #fffaeb, #e0b15e)', // Define your gradient
       },
 	  width: {
-        '90': '90%', // Custom width for 90%
+        '70': '70%',
       },
     },
   },
