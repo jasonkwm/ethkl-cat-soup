@@ -149,7 +149,7 @@ type QuestionType = {
 const SurveyorContext = createContext<SurveyorContextType | undefined>(undefined);
 export const SurveyorProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [surveyList, setSurveyList] = useState<SurveyDetailsType[]>(dummySurvey);
+  const [surveyList, setSurveyList] = useState<SurveyDetailsType[]>([]);
   const [surveyQnA, setSurveyQnA] = useState<any>(surveyData);
   const [selectedSurvey, setSelectedSurvey] = useState<any>();
   const [requestList, setRequestList] = useState<any>(dummyUserRequests);
