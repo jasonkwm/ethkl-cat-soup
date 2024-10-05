@@ -13,14 +13,14 @@ export function SelectionScreen() {
       <div className="text-center">
         <Button className="bg-white border-white" style={{marginRight: "10px"}}>
           <Link style={{ color: "black", textDecoration: "none" }} href="/surveyor">
-            Create Survey
+            Create
           </Link>
         </Button>
       </div>
       <div className="text-center">
         <Button className="bg-white border-white">
           <Link style={{ color: "black", textDecoration: "none" }} href="/participate">
-            Participate in Survey
+            Participate
           </Link>
         </Button>
       </div>
