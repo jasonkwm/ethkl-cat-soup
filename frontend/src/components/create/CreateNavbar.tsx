@@ -1,10 +1,20 @@
 "use client";
+import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
 import Link from "next/link";
 
 const CreateNavbar = () => {
-  const publicKey = "0x6f80ee5F3Dc35d32D7d4D3777130971e3A24455f";
+  const { publicKey } = useWeb3AuthContext();
   const shortenKey = (key: string) => `${key.slice(0, 6)}...${key.slice(-4)}`;
-
+  const handleCopyClick = () => {
+    navigator.clipboard.writeText(publicKey).then(
+      () => {
+        alert("Copied to clipboard!");
+      },
+      (err) => {
+        alert("Failed to copy: ");
+      }
+    );
+  };
   return (
     <nav
       className="flex justify-between items-center text-white"
@@ -39,7 +49,10 @@ const CreateNavbar = () => {
         >
           <img src="/tab.png" alt="tab" style={{ width: "25px" }}></img>
         </Link>
-        <button className="px-4 py-2 rounded-lg bg-white hover:bg-white-600 text-black transition-colors">
+        <button
+          onClick={handleCopyClick}
+          className="px-4 py-2 rounded-lg bg-white hover:bg-white-600 text-black transition-colors"
+        >
           {shortenKey(publicKey)}
         </button>
       </div>

@@ -5,6 +5,7 @@ import { AuthAdapter } from "@web3auth/auth-adapter";
 import { WALLET_ADAPTERS, CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK, UX_MODE } from "@web3auth/base";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import RPC from "./web3RPC"; // for using web3.js
+import Web3 from "web3";
 
 const chainConfig = {
 	chainId: "0x82750",
@@ -38,6 +39,10 @@ interface Web3AuthContextType {
 	getBalance: any;
 	getUserInfo: any;
 	login: any;
+  publicKey: any;
+  setPublicKey: (value: any) => void;
+  web3Rpc: any;
+  setWeb3Rpc: (value: any) => void;
 }
 
 const Web3AuthContext = createContext<Web3AuthContextType | undefined>(undefined);
@@ -55,7 +60,8 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [web3Auth, setWeb3Auth] = useState<any>();
 	const [web3AuthProvider, setWeb3AuthProvider] = useState<IProvider | null>(null);
 	const [userInfo, setUserInfo] = useState<any>();
-
+  const [publicKey, setPublicKey] = useState<any>();
+  const [web3Rpc, setWeb3Rpc] = useState<any>();
 	useEffect(() => {
 		if (userInfo) return;
 		console.log("_______________________________________________________")
@@ -94,9 +100,10 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 					console.log("web3auth", web3AuthInstance);
 					console.log("idtoken: ", user.idToken);
 					console.log("auth0token: ", user.oAuthIdToken);
-					const rpc = new RPC(web3AuthInstance.provider as any)
-					console.log("Wallet Address: ", await rpc.getAccounts())
-					console.log("Private Key: ", await rpc.getPrivateKey())
+          const web3 = new Web3(web3AuthInstance.provider as any);
+          const address = (await web3.eth.getAccounts());
+          setPublicKey(address[0]);
+          setWeb3Rpc(web3);
 
 				}
 			} catch (error) {
@@ -113,7 +120,6 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 		}
 	}, [web3Auth]);
 
-	//WARN: --------------------------------------------------------------------------------------
 	const login = async () => {
 		if (!web3Auth) {
 			console.log("web3Auth not initialized yet");
@@ -247,6 +253,10 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 				getBalance,
 				getUserInfo,
 				login,
+        publicKey,
+        setPublicKey,
+        web3Rpc,
+        setWeb3Rpc
 			}}
 		>
 			{children}
