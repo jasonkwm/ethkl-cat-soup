@@ -53,7 +53,7 @@ const CreateNavbar = () => {
           onClick={handleCopyClick}
           className="px-4 py-2 rounded-lg bg-white hover:bg-white-600 text-black transition-colors"
         >
-          {shortenKey(publicKey)}
+          {shortenKey(publicKey ? publicKey : "")}
         </button>
       </div>
     </nav>
