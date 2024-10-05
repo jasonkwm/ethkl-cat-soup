@@ -94,9 +94,9 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 					console.log("web3auth", web3AuthInstance);
 					console.log("idtoken: ", user.idToken);
 					console.log("auth0token: ", user.oAuthIdToken);
-					const rpc = new RPC(web3AuthInstance.provider)
-					console.log("Wallet Address: ", rpc.getAccounts())
-					console.log("Private Key: ", rpc.getPrivateKey())
+					const rpc = new RPC(web3AuthInstance.provider as any)
+					console.log("Wallet Address: ", await rpc.getAccounts())
+					console.log("Private Key: ", await rpc.getPrivateKey())
 
 				}
 			} catch (error) {
