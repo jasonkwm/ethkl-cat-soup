@@ -1,0 +1,59 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: CryptoSurvey
+    network: scroll-sepolia
+    source:
+      address: "0xC6cc0F64a7084B2d878e0Fbc15c173d6E4160106"
+      abi: CryptoSurvey
+      startBlock: 6875327
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - ApprovalForAll
+        - CreatePermissionEvent
+        - CreateRequestEvent
+        - CreateSurveyEvent
+        - CreateSurveyMetadataEvent
+        - RoleAdminChanged
+        - RoleGranted
+        - RoleRevoked
+        - SubmitSurveyReplyEvent
+        - TransferBatch
+        - TransferSingle
+        - URI
+      abis:
+        - name: CryptoSurvey
+          file: ./abis/CryptoSurvey.json
+      eventHandlers:
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: CreatePermissionEvent(uint256,address,string)
+          handler: handleCreatePermissionEvent
+        - event: CreateRequestEvent(uint256,address,string,string)
+          handler: handleCreateRequestEvent
+        - event: CreateSurveyEvent(uint256,string,string,string,string,address)
+          handler: handleCreateSurveyEvent
+        - event: CreateSurveyMetadataEvent(uint256,uint256,uint256,address)
+          handler: handleCreateSurveyMetadataEvent
+        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+          handler: handleRoleAdminChanged
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+        - event: SubmitSurveyReplyEvent(uint256,uint256,string,address)
+          handler: handleSubmitSurveyReplyEvent
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: URI(string,indexed uint256)
+          handler: handleURI
+      file: ./src/crypto-survey.ts
