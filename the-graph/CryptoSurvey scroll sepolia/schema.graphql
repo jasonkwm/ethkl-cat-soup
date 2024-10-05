@@ -1,3 +1,45 @@
+type Survey @entity {
+  id: ID!
+  surveyId: BigInt!
+  name: String!
+  description: String!
+  imageCID: String!
+  encryptedCID: String!
+  owner: Bytes!
+  maxReply: BigInt
+  incentive: BigInt
+  request: [Request]! @derivedFrom(field:"survey")
+  permission: [Permission]! @derivedFrom(field:"survey")
+  SurveyReply:[SurveyReply]! @derivedFrom(field:"survey")
+  blockTimestamp: BigInt!
+}
+
+type Request @entity {
+  id:ID!
+  survey: Survey
+  requestAddress: Bytes
+  description: String!
+  publicKey: String!
+  blockTimestamp: BigInt!
+}
+
+type Permission @entity {
+  id:ID!
+  survey: Survey
+  requestAddress: Bytes
+  encryptedCID: String!
+  blockTimestamp: BigInt!
+}
+
+type SurveyReply @entity {
+  id: Bytes!
+  survey: Survey!
+  incentive: BigInt!
+  encryptedCID: String! 
+  replyAddress: Bytes!
+  blockTimestamp: BigInt!
+}
+
 type ApprovalForAll @entity(immutable: true) {
   id: Bytes!
   account: Bytes! # address
@@ -8,50 +50,6 @@ type ApprovalForAll @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type CreatePermissionEvent @entity(immutable: true) {
-  id: Bytes!
-  surveyId: BigInt! # uint256
-  requestAddress: Bytes! # address
-  encryptedCID: String! # string
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type CreateRequestEvent @entity(immutable: true) {
-  id: Bytes!
-  surveyId: BigInt! # uint256
-  requestAddress: Bytes! # address
-  description: String! # string
-  publicKey: String! # string
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type CreateSurveyEvent @entity(immutable: true) {
-  id: Bytes!
-  surveyId: BigInt! # uint256
-  name: String! # string
-  description: String! # string
-  imageCID: String! # string
-  encryptedCID: String! # string
-  surveyAddress: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type CreateSurveyMetadataEvent @entity(immutable: true) {
-  id: Bytes!
-  surveyId: BigInt! # uint256
-  maxReply: BigInt! # uint256
-  incentive: BigInt! # uint256
-  owner: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
 
 type RoleAdminChanged @entity(immutable: true) {
   id: Bytes!
@@ -83,17 +81,6 @@ type RoleRevoked @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type SubmitSurveyReplyEvent @entity(immutable: true) {
-  id: Bytes!
-  surveyId: BigInt! # uint256
-  incentive: BigInt! # uint256
-  encryptedCID: String! # string
-  replyAddress: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
 type TransferBatch @entity(immutable: true) {
   id: Bytes!
   operator: Bytes! # address
@@ -111,7 +98,7 @@ type TransferSingle @entity(immutable: true) {
   operator: Bytes! # address
   from: Bytes! # address
   to: Bytes! # address
-  CryptoSurvey_id: BigInt! # uint256
+  CryptoPoll_id: BigInt! # uint256
   value: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
@@ -121,7 +108,7 @@ type TransferSingle @entity(immutable: true) {
 type URI @entity(immutable: true) {
   id: Bytes!
   value: String! # string
-  CryptoSurvey_id: BigInt! # uint256
+  CryptoPoll_id: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
