@@ -50,7 +50,6 @@ const SelectedSurvey: React.FC = () => {
   const [questions, setQuestions] = useState<any>();
   const [txHash, setTxhash] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  if (!selectedSurvey) return;
   const handleInputChange = (id: number, value: string) => {
     setAnswers((prevAnswers) => ({
       ...prevAnswers,
@@ -76,7 +75,8 @@ const SelectedSurvey: React.FC = () => {
 
     }
     catch(e) {
-      console.log(e.message)
+			const err = e as Error;
+      console.log(err.message)
     }
   }
   if (!questions) {
@@ -93,7 +93,7 @@ const SelectedSurvey: React.FC = () => {
     // onSubmit(answers);
   };
 
-  const submitSurveyReplyContractInteraction = async (CID) => {
+  const submitSurveyReplyContractInteraction = async (CID: string) => {
     const surveyId = selectedSurvey.surveyId;
     const surveyAddress = publicKey;
     const encryptedCID = CID;
@@ -112,6 +112,8 @@ const SelectedSurvey: React.FC = () => {
       console.error(`Error: ${error}`);
     }
 }
+
+  if (!selectedSurvey) return;
 
 if (submitted) return <ParticipateSuccess {...{ txHash }} setSelectedSurvey={setSelectedSurvey} />;
 

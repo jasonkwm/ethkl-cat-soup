@@ -10,6 +10,19 @@ import { downloadIPFS } from "@/utilities/downloadIPFS"
 import { useSurveyorContext } from '@/context/SurveyorProvider';
 
 // import { useQueryClient } from '@tanstack/react-query';
+type SurveyResponseType = {
+	encryptedCID: string;
+	SurveyReply: {
+		encryptedCID: string;
+		replyAddress: string;
+	}[];
+};
+
+type SurveyDataType = {
+	data: {
+		surveys: SurveyResponseType[];
+	}
+};
 
 const surveyData = [
 	{
@@ -56,11 +69,18 @@ const surveyData = [
 		],
 	},
 ];
+type SurveyQnAType = {
+	question: string;
+	answers: {
+		user: string;
+		answer: string;
+	}[];
+};
 
 export default function Replies() {
-	const [survey, setSurvey] = useState(null);
+	const [survey, setSurvey] = useState<SurveyDataType | null>(null);
 	// const [surveyQnA, setSurveyQnA,] = useSurveyorContext();
-	const [surveyQnA, setSurveyQnA,] = useState([]);
+	const [surveyQnA, setSurveyQnA,] = useState<SurveyQnAType[]>([]);
 	const { web3AuthProvider, web3Auth, publicKey, web3Rpc } = useWeb3AuthContext();
 	const params = useParams()
 	const { surveyId } = params;
@@ -111,7 +131,7 @@ export default function Replies() {
 				console.error("Error fetching data:", error);
 			}
 		};
-		if (!survey || survey.length === 0) {
+		if (!survey || !Array.isArray(survey) || survey.length === 0) {
 			fetchData();
 		}
 	}, [publicKey, survey]);
