@@ -9,7 +9,6 @@ import Image from "next/image.js";
 import { useState, useEffect } from "react";
 import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
 import Link from "next/link";
-import Container from "react-bootstrap/Container";
 
 export default function Home() {
   const { account, setAccount, walletInstalled, setWalletInstalled, provider, setProvider } =
@@ -35,6 +34,19 @@ export default function Home() {
     login,
   } = useWeb3AuthContext();
   // console.log("userInfo");
+
+  const { publicKey } = useWeb3AuthContext();
+  const shortenKey = (key) => `${key.slice(0, 6)}...${key.slice(-4)}`;
+  const handleCopyClick = () => {
+    navigator.clipboard.writeText(publicKey).then(
+      () => {
+        alert("Copied to clipboard!");
+      },
+      (err) => {
+        alert("Failed to copy: ");
+      }
+    );
+  };
 
   // if (!isLoggedIn && !userInfo) return;
 
@@ -93,6 +105,12 @@ export default function Home() {
 	          {error ? <Alert className="warning">{error}</Alert> : null}
 	        </div>
 	      </div>
+		  <button
+	          onClick={handleCopyClick}
+	          className="px-4 py-2 rounded-lg bg-white hover:bg-white-600 text-black transition-colors"
+	        >
+	          {shortenKey(publicKey ? publicKey : "")}
+	        </button>
 		</nav>
       <div style={{ padding: "60px 100px", border: "solid 0.5px", borderTop: "0px" }}>
 			  <div className="flex justify-center align-center">
