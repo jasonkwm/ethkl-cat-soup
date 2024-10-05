@@ -7,17 +7,23 @@ import Link from "next/link";
 import { useGlobalContext } from "../context/GlobalProvider.jsx";
 
 export function SelectionScreen() {
-  const {account} = useGlobalContext()
+  const { account } = useGlobalContext();
   return (
     <Container>
-      
-        <div className="mb-5 text-center">
-        <Button><Link style={{color:"white", textDecoration:"none"}} href="/create">Create Survey</Link></Button>
-        </div>
-        <div className="text-center">
-        <Button><Link style={{color:"white", textDecoration:"none"}} href="/participate">Participate in Survey</Link></Button>
-        </div>
-         
+      <div className="mb-5 text-center">
+        <Button>
+          <Link style={{ color: "white", textDecoration: "none" }} href="/surveyor">
+            Create Survey
+          </Link>
+        </Button>
+      </div>
+      <div className="text-center">
+        <Button>
+          <Link style={{ color: "white", textDecoration: "none" }} href="/participate">
+            Participate in Survey
+          </Link>
+        </Button>
+      </div>
     </Container>
   );
 }

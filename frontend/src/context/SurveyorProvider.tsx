@@ -136,7 +136,15 @@ interface SurveyorContextType {
   setRequestList: (value: any) => void;
   toggleReplies: boolean;
   setToggleReplies: (value: boolean) => void;
+  questions: QuestionType[];
+  setQuestions: (value: QuestionType[]) => void;
 }
+
+type QuestionType = {
+  id: number;
+  question: string;
+  description: string;
+};
 
 const SurveyorContext = createContext<SurveyorContextType | undefined>(undefined);
 export const SurveyorProvider = ({ children }: { children: ReactNode }) => {
@@ -146,6 +154,7 @@ export const SurveyorProvider = ({ children }: { children: ReactNode }) => {
   const [selectedSurvey, setSelectedSurvey] = useState<any>();
   const [requestList, setRequestList] = useState<any>(dummyUserRequests);
   const [toggleReplies, setToggleReplies] = useState(false);
+  const [questions, setQuestions] = useState<QuestionType[]>([]);
 
   return (
     <SurveyorContext.Provider
@@ -162,6 +171,8 @@ export const SurveyorProvider = ({ children }: { children: ReactNode }) => {
         setRequestList,
         toggleReplies,
         setToggleReplies,
+        questions,
+        setQuestions,
       }}
     >
       {children}
