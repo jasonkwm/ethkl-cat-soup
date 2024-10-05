@@ -9,7 +9,7 @@ const SurveySuccess: React.FC = () => {
         <p className="text-gray-600 mb-6">
           Thank you for submitting the survey. Your responses have been recorded.
         </p>
-        <Link href="/create">
+        <Link href="/surveyor">
           <button className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
             Back to Dashboard
           </button>

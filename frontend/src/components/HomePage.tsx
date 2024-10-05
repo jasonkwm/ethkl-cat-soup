@@ -7,7 +7,7 @@ const RoleSelection: React.FC = () => {
       <div className="text-center">
         <h1 className="text-3xl font-bold text-gray-800 mb-8">Choose Your Role</h1>
         <div className="space-y-4">
-          <Link href="/create">
+          <Link href="/surveyor">
             <button className="w-64 px-6 py-3 bg-blue-500 text-white text-xl rounded-md hover:bg-blue-600 transition">
               Surveyor
             </button>
