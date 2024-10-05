@@ -7,13 +7,15 @@ import Badge from "react-bootstrap/Badge";
 import { Web3 } from "web3";
 import Image from "next/image.js";
 import { useState, useEffect } from "react";
-// import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
+import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
 
 export default function Home() {
   const { account, setAccount, walletInstalled, setWalletInstalled, provider, setProvider } =
     useGlobalContext();
   const [error, setError] = useState("");
   // const { isLoggedIn, userInfo } = useWeb3AuthContext();
+	
+	const {isLoggedIn, setIsLoggedIn, web3Auth, setWeb3Auth, web3AuthProvider, setWeb3AuthProvider, userInfo, setUserInfo, signMessage, getAccounts, getPrivateKey, sendTransaction, getBalance, getUserInfo, login,} = useWeb3AuthContext
   // console.log("userInfo");
 
   // if (!isLoggedIn && !userInfo) return;
@@ -37,7 +39,7 @@ export default function Home() {
           src="/logo.png"
           width={500}
           height={500}
-          alt="crypto task"
+          alt="logo"
           style={{ maxWidth: "10%" }}
         ></Image>
       </div>
@@ -55,24 +57,9 @@ export default function Home() {
             <SelectionScreen provider={provider} />
           ) : (
             <Button
-              onClick={async function () {
-                try {
-                  if (!window.ethereum) {
-                    setWalletInstalled(false);
-                  } else {
-                    const accounts = await window.ethereum.request({
-                      method: "eth_requestAccounts",
-                    });
-                    const web3 = new Web3(window.ethereum);
-                    setProvider(web3);
-                    setAccount(accounts[0]);
-                  }
-                } catch (e) {
-                  setError(e.message);
-                }
-              }}
+              onClick={login}
               className="primary my-2"
-              disabled={walletInstalled ? false : true}
+              disabled={isLoggedIn ? true : false}
             >
               Connect
             </Button>
