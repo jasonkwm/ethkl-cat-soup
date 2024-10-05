@@ -41,7 +41,7 @@ export default function Requests() {
                 </button>
                 <button
                   onClick={() => handleDecline(request.publicKey)}
-                  className="px-2 py-2 bg-custom-dark-brown rounded-md hover:bg--custom-light-brown transition"
+                  className="px-2 py-2 bg-custom-dark-brown rounded-md hover:bg-custom-light-brown transition"
                 >
                   <Image src="/cross-button.png" width={500} height={500} alt="key" style={{ width: "25px", height: "25px" }}></Image>
                 </button>
