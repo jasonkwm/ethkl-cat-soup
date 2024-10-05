@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image.js";
 
 const surveyData = [
@@ -59,6 +59,11 @@ export default function Replies() {
     marketReply: 300,
     incentive: 2,
   });
+
+  useEffect(()=>{
+    async function
+  })
+
   return (
     <div className="m-auto w-[92%] p-6 bg-white rounded-lg shadow-lg mt-4">
       <p className="font-semibold">{survey.name}</p>

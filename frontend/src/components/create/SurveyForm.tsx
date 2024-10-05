@@ -8,15 +8,11 @@ import { pinJSONToIPFS } from "@/utilities/uploadIPFS";
 import CryptoSurvey from "@/contract/CryptoSurvey";
 import {Web3} from "web3";
 
-
-
 type QuestionType = {
   id: number;
   question: string;
   description: string;
 };
-
-
 
 const SurveyForm: React.FC = () => {
   const { questions, setQuestions } = useSurveyorContext();
