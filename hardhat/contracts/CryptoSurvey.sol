@@ -14,11 +14,13 @@ contract CryptoSurvey is AccessControl, ERC1155 {
     mapping(address=>SurveyReply[]) public surveyReplies;
     mapping(uint=>SurveyMetadata) public surveyMetadata;
     mapping(address=>Request[]) public requests;
-   
+    mapping(address=>Permission[]) public permissions;
+
     event CreateSurveyEvent(uint surveyId, string name, string description, string imageCID, string encryptedCID, address surveyAddress);
     event CreateSurveyMetadataEvent(uint surveyId, uint maxReply, uint incentive, address owner);
     event CreateRequestEvent(uint surveyId, address requestAddress, string description, string publicKey);
     event CreatePermissionEvent(uint surveyId, address requestAddress, string encryptedCID);
+    event SubmitSurveyReplyEvent(uint surveyId, uint incentive, string encryptedCID, address replyAddress);
     
     struct Survey {
         uint surveyId;
@@ -49,7 +51,11 @@ contract CryptoSurvey is AccessControl, ERC1155 {
         string publicKey;
     }
 
-    
+    struct Permission {
+        uint surveyId;
+        address requestAddress;
+        string encryptedCID;
+    }
 
     constructor() ERC1155(""){
     }
@@ -75,7 +81,6 @@ contract CryptoSurvey is AccessControl, ERC1155 {
         // _surveyId +2 due to survey gating mechanism for request and reply
         _surveyId += 2;
     }
-
     //created by User who wants to participate in survey
     function createRequest(uint surveyId, address surveyAddress, string calldata description, string calldata publicKey) public {
         //returns error if duplicate request or invalid request due to token gating mechanism. 
@@ -87,8 +92,28 @@ contract CryptoSurvey is AccessControl, ERC1155 {
         requests[surveyAddress].push(Request(surveyId, msg.sender, description, publicKey));
         emit CreateRequestEvent(surveyId, msg.sender, description, publicKey);
     }
+    //Survey creator reencrypted CID using public key to pass to user who requested it
+    //Create an NFT that acts as token gate.
+    function createPermission(uint surveyId, address requestAddress, string calldata encryptedCID) public {
+        require(msg.sender == surveyMetadata[surveyId].owner, "Not Survey creator, can't approve");
+        permissions[requestAddress].push(Permission(surveyId, requestAddress, encryptedCID));
+        _burn(requestAddress, surveyId, 1);
+        _mint(requestAddress, surveyId + 1, 1, "");
+        
+        setApprovalForAll(requestAddress, true);
+        emit CreatePermissionEvent(surveyId, requestAddress, encryptedCID);
+    }
 
-    
+    //Submit SurveyReply and CSURVEY token allocated are approved are transferred to msg.sender
+    function submitSurveyReply(uint surveyId, address surveyAddress, string calldata encryptedCID) public {
+        //token gating check for reply
+        require(balanceOf(msg.sender, surveyId + 1) == 1, "Not authorised for Survey reply");
+        uint incentive = surveyMetadata[surveyId].incentive / surveyMetadata[surveyId].maxReply;
+        surveyReplies[msg.sender].push(SurveyReply(surveyId, incentive, encryptedCID, msg.sender));
+        _burn(msg.sender, surveyId + 1, 1);
+        safeTransferFrom(surveyAddress, msg.sender, CSURVEY, incentive, "");
+        emit SubmitSurveyReplyEvent(surveyId, incentive, encryptedCID, msg.sender);
+    }
     
 
     

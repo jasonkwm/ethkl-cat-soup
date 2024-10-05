@@ -23,7 +23,7 @@ export async function pinImageToIPFS (image) {
     }
 }
 
-export async function pinJSONToIPFS (json) {
+export async function pinJSONToIPFS (image) {
     try{
       const res = await fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", JSON.parse(json), {
         maxBodyLength: "Infinity",
