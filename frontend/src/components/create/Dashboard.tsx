@@ -45,6 +45,8 @@ const Dashboard = () => {
             surveyId
             name
             description
+						maxReply
+						incentive
           }
         }`;
 				// console.log(owner)
@@ -120,14 +122,14 @@ const Dashboard = () => {
               </div>
               <div className="flex flex-row gap-2">
                 <Link
-                  href={"/surveyor/view"}
+                  href={`/surveyor/view/${survey.surveyId}`}
                   onClick={() => setToggleReplies(true)}
                   className="px-4 py-2 bg-custom-dark-brown text-white rounded-lg hover:bg-custom-light-brown transition-colors text-white no-underline"
                 >
                   <img src="/eye.png" alt="eye" style={{ width: "25px" }} />
                 </Link>
                 <Link
-                  href={"/surveyor/view"}
+                  href={`/surveyor/view/${survey.surveyId}`}
                   className="px-4 py-2 bg-custom-dark-brown text-white rounded-lg hover:bg-custom-light-brown transition-colors"
                   onClick={() => setToggleReplies(false)}
                 >

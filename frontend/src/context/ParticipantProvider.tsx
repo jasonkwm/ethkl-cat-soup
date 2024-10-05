@@ -137,7 +137,7 @@ interface ParticipantContextType {
 const ParticipantContext = createContext<ParticipantContextType | undefined>(undefined);
 export const ParticipantProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [surveyList, setSurveyList] = useState<SurveyDetailsType[]>(dummySurvey);
+  const [surveyList, setSurveyList] = useState<SurveyDetailsType[]>([]);
   const [surveyQnA, setSurveyQnA] = useState<any>(surveyData);
   const [selectedSurvey, setSelectedSurvey] = useState<SurveyDetailsType | null>(null);
 
