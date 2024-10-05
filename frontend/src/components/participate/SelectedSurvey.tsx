@@ -1,6 +1,7 @@
 "use client";
 import { useParticipantContext } from "@/context/ParticipantProvider";
-import React, { useState } from "react";
+import { downloadIPFS } from "@/utilities/downloadIPFS";
+import React, { useState, useEffect } from "react";
 import Image from "next/image.js";
 
 type Question = {
@@ -40,7 +41,7 @@ const surveyData = [
 const SelectedSurvey: React.FC = () => {
   const [answers, setAnswers] = useState<{ [key: number]: string }>({});
   const { selectedSurvey, setSelectedSurvey } = useParticipantContext();
-  const [questions, setQuestions] = useState<any>(surveyData);
+  const [questions, setQuestions] = useState<any>();
   if (!selectedSurvey) return;
   const handleInputChange = (id: number, value: string) => {
     setAnswers((prevAnswers) => ({
@@ -48,6 +49,22 @@ const SelectedSurvey: React.FC = () => {
       [id]: value,
     }));
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+    try {
+      let result = await downloadIPFS(selectedSurvey.encryptedCID)
+      setQuestions(result)
+      console.log(result)
+
+    }
+    catch(e) {
+      console.log(e.message)
+    }
+  }
+  if (!questions) 
+    fetchData()
+  },[questions])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
