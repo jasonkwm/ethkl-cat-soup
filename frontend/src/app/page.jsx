@@ -14,8 +14,24 @@ export default function Home() {
     useGlobalContext();
   const [error, setError] = useState("");
   // const { isLoggedIn, userInfo } = useWeb3AuthContext();
-	
-	const {isLoggedIn, setIsLoggedIn, web3Auth, setWeb3Auth, web3AuthProvider, setWeb3AuthProvider, userInfo, setUserInfo, signMessage, getAccounts, getPrivateKey, sendTransaction, getBalance, getUserInfo, login,} = useWeb3AuthContext()
+
+  const {
+    isLoggedIn,
+    setIsLoggedIn,
+    web3Auth,
+    setWeb3Auth,
+    web3AuthProvider,
+    setWeb3AuthProvider,
+    userInfo,
+    setUserInfo,
+    signMessage,
+    getAccounts,
+    getPrivateKey,
+    sendTransaction,
+    getBalance,
+    getUserInfo,
+    login,
+  } = useWeb3AuthContext();
   // console.log("userInfo");
 
   // if (!isLoggedIn && !userInfo) return;
@@ -53,14 +69,10 @@ export default function Home() {
           className="d-flex flex-column justify-content-center align-items-center"
           style={{ height: "80vh" }}
         >
-          {provider ? (
-            <SelectionScreen provider={provider} />
+          {web3Auth && web3Auth.connected ? (
+            <SelectionScreen />
           ) : (
-            <Button
-              onClick={login}
-              className="primary my-2"
-              disabled={isLoggedIn ? true : false}
-            >
+            <Button onClick={login} className="primary my-2" disabled={isLoggedIn ? true : false}>
               Connect
             </Button>
           )}
