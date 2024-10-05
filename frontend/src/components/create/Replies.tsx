@@ -1,7 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image.js";
+import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
+import CryptoSurvey from "@/contract/CryptoSurvey";
+import { Web3 } from "web3";
+
+// import { useQueryClient } from '@tanstack/react-query';
 
 const surveyData = [
   {
@@ -59,30 +64,106 @@ export default function Replies() {
     marketReply: 300,
     incentive: 2,
   });
+  const { web3AuthProvider, web3Auth, publicKey, web3Rpc } = useWeb3AuthContext();
+
+  const web3 = new Web3(web3AuthProvider as any);
+
+  const contractAddress = CryptoSurvey.address;
+  const contractAbi = CryptoSurvey.abi; // Your contract ABI
+  const contract = new web3.eth.Contract(contractAbi, contractAddress);
+
+  useEffect(() => {
+    const url = "https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest";
+
+    const fetchData = async () => {
+      try {
+        const query = `{
+          surveys(where: {owner:"${publicKey}"}) {
+            id
+            surveyId
+            name
+            description
+          }
+        }`;
+        // console.log(owner)
+
+        const response = await fetch(
+          "https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              query: query as string,
+              operationName: "Subgraphs",
+              variables: {},
+            }),
+          }
+        );
+
+        console.log("response data is : ", response.json());
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  });
+
   return (
     <div className="m-auto w-[92%] p-6 bg-white rounded-lg shadow-lg mt-4">
       <p className="font-semibold">{survey.name}</p>
       <p className="text-gray-600">{survey.description}</p>
       <div className="mx-auto">
         <p className="font-semibold mb-6">Survey Questions</p>
-        <ul style={{paddingLeft: "0px"}}>
+        <ul style={{ paddingLeft: "0px" }}>
           {surveyData.map((item, index) => (
-            <li key={index} className="p-4 bg-white rounded-lg shadow-md border border-gray-200" style={{marginBottom: "15px"}}>
-			  <div className="flex">
-				  <Image src="/letter-q.png" width={500} height={500} alt="letter-q" style={{ width: "25px", height: "25px", marginRight: "10px" }}></Image>
-	              <p className="font-semibold">{item.question}</p>
-			  </div>
-			  <div className="flex">
-				  <Image src="/a.png" width={500} height={500} alt="letter-a" style={{ width: "25px", height: "25px", marginRight: "10px" }}></Image>
-	              <p className="font-semibold">Responses:</p>
-			  </div>
+            <li
+              key={index}
+              className="p-4 bg-white rounded-lg shadow-md border border-gray-200"
+              style={{ marginBottom: "15px" }}
+            >
+              <div className="flex">
+                <Image
+                  src="/letter-q.png"
+                  width={500}
+                  height={500}
+                  alt="letter-q"
+                  style={{ width: "25px", height: "25px", marginRight: "10px" }}
+                ></Image>
+                <p className="font-semibold">{item.question}</p>
+              </div>
+              <div className="flex">
+                <Image
+                  src="/a.png"
+                  width={500}
+                  height={500}
+                  alt="letter-a"
+                  style={{ width: "25px", height: "25px", marginRight: "10px" }}
+                ></Image>
+                <p className="font-semibold">Responses:</p>
+              </div>
               <ul className="list-none pl-5">
                 {item.answers.map((response, userIndex) => (
                   <li key={userIndex} className="text-gray-800">
-					<div className="flex">
-						<Image src="/user.png" width={500} height={500} alt="letter-a" style={{ width: "28px", height: "28px", marginRight: "10px", display: "flex", justifyContent: "center", alignItems: "center", padding: "5px 5px" }}></Image>
-	                    <strong>{response.user}</strong>: {response.answer}
-					</div>
+                    <div className="flex">
+                      <Image
+                        src="/user.png"
+                        width={500}
+                        height={500}
+                        alt="letter-a"
+                        style={{
+                          width: "28px",
+                          height: "28px",
+                          marginRight: "10px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          padding: "5px 5px",
+                        }}
+                      ></Image>
+                      <strong>{response.user}</strong>: {response.answer}
+                    </div>
                   </li>
                 ))}
               </ul>

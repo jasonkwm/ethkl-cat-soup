@@ -1,9 +1,12 @@
 "use client";
 import { useSurveyorContext } from "@/context/SurveyorProvider";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SurveySuccess from "./SurveySucess";
 import Image from "next/image.js";
 import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
+import { pinJSONToIPFS } from "@/utilities/uploadIPFS";
+import CryptoSurvey from "@/contract/CryptoSurvey";
+import { Web3 } from "web3";
 
 type QuestionType = {
   id: number;
@@ -13,7 +16,7 @@ type QuestionType = {
 
 const SurveyForm: React.FC = () => {
   const { questions, setQuestions } = useSurveyorContext();
-  const {} = useWeb3AuthContext();
+  const { web3AuthProvider, web3Auth, publicKey } = useWeb3AuthContext();
   const [surveyDetails, setSurveyDetails] = useState<any>({
     title: "",
     description: "",
@@ -21,6 +24,15 @@ const SurveyForm: React.FC = () => {
     maxReply: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [txHash, setTxhash] = useState("");
+
+  const web3Rpc = new Web3(web3AuthProvider as any);
+
+  const contractAddress = CryptoSurvey.address;
+  const contractAbi = CryptoSurvey.abi; // Your contract ABI
+  const contract = new web3Rpc.eth.Contract(contractAbi, contractAddress);
+  console.log(publicKey);
+
   // Add a new question
   const handleAddQuestion = () => {
     const newQuestion: QuestionType = {
@@ -31,8 +43,15 @@ const SurveyForm: React.FC = () => {
     setQuestions([...questions, newQuestion]);
   };
 
-  const handleSurveySubmission = () => {
-    // trigger something to submit survey
+  const handleSurveySubmission = async function () {
+    try {
+      let result = await pinJSONToIPFS(questions);
+      console.log("ipfs hash", result.IpfsHash);
+      await createSurveyContractInteraction(result.IpfsHash);
+    } catch (e: any) {
+      console.log(e.message);
+    }
+
     setSubmitted(true);
   };
 
@@ -55,7 +74,33 @@ const SurveyForm: React.FC = () => {
     }));
   };
 
-  if (submitted) return <SurveySuccess />;
+  const createSurveyContractInteraction = async (CID: any) => {
+    const maxReply = surveyDetails.maxReply;
+    const incentive = surveyDetails.incentive;
+    const name = surveyDetails.title;
+    const description = surveyDetails.description;
+    const imageCID = "";
+    const encryptedCID = CID;
+
+    // const accounts = await web3Rpc.eth.getAccounts();  // Get your wallet account
+    // const sender = accounts[0];
+
+    try {
+      // console.log("accounts",accounts)
+      const balanceWei = await web3Rpc.eth.getBalance(publicKey);
+      console.log("balanceWei", balanceWei);
+      const tx = await contract.methods
+        .createSurvey(maxReply, incentive, name, description, imageCID, encryptedCID)
+        .send({ from: publicKey, gas: "1000000" });
+      console.log(`Transaction hash: ${tx.transactionHash}`);
+      setTxhash(tx.transactionHash);
+      // console.log(`Transaction receipt: ${tx.receipt}`);
+    } catch (error) {
+      console.error(`Error: ${error}`);
+    }
+  };
+
+  if (submitted) return <SurveySuccess {...{ txHash }} />;
 
   return (
     <div>

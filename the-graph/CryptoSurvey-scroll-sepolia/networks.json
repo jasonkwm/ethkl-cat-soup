@@ -1,0 +1,8 @@
+{
+  "scroll-sepolia": {
+    "CryptoSurveyV1": {
+      "address": "0x45035b1cc89D68873775316b1fE4ca5575D1F24F",
+      "startBlock": 6879035
+    }
+  }
+}

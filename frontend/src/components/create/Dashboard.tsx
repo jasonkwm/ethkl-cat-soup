@@ -2,7 +2,10 @@
 
 import { useSurveyorContext } from "@/context/SurveyorProvider";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
+import CryptoSurvey from "@/contract/CryptoSurvey";
+import { Web3 } from "web3";
 
 // Button (View)
 // - Reply
@@ -22,6 +25,57 @@ type SurveyDetailsType = {
 const Dashboard = () => {
   const { surveyList, setToggleReplies } = useSurveyorContext();
   console.log(surveyList);
+  const { web3AuthProvider, web3Auth, publicKey, web3Rpc } = useWeb3AuthContext();
+
+  const web3 = new Web3(web3AuthProvider as any);
+
+  const contractAddress = CryptoSurvey.address;
+  const contractAbi = CryptoSurvey.abi; // Your contract ABI
+  const contract = new web3.eth.Contract(contractAbi, contractAddress);
+
+  useEffect(() => {
+    const url = "https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest";
+
+    const fetchData = async () => {
+      try {
+        const query = `{
+          surveys(where: {owner:"${publicKey}"}) {
+            id
+            surveyId
+            name
+            description
+          }
+        }`;
+        // console.log(owner)
+
+        const response = await fetch(
+          "https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              query: query as string,
+              operationName: "Subgraphs",
+              variables: {},
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("response data is : ", data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  });
+
   return (
     <div>
       <h4 className="text-left">Dashboard</h4>
@@ -50,19 +104,11 @@ const Dashboard = () => {
               </div>
             </div>
             <div>
-              <img
-                src="email.png"
-                alt="email"
-                style={{ width: "25px", height: "25px" }}
-              ></img>
+              <img src="email.png" alt="email" style={{ width: "25px", height: "25px" }}></img>
               <p className="text-center">{survey.marketReply}</p>
             </div>
             <div>
-              <img
-                src="dollar.png"
-                alt="dollar"
-                style={{ width: "25px", height: "25px" }}
-              ></img>
+              <img src="dollar.png" alt="dollar" style={{ width: "25px", height: "25px" }}></img>
               <p className="text-center">{survey.incentive}</p>
             </div>
             <div className="flex flex-row gap-2">

@@ -27,7 +27,7 @@ export default class EthereumRpc {
       const web3 = new Web3(this.provider as any);
 
       // Get user's Ethereum public address
-      const address = (await web3.eth.getAccounts());
+      const address = await web3.eth.getAccounts();
 
       return address;
     } catch (error) {
@@ -35,30 +35,30 @@ export default class EthereumRpc {
     }
   }
 
-	async contractInteract(): Promise<any> {
-		const web3 = new Web3(this.provider as any);
+  async contractInteract(): Promise<any> {
+    const web3 = new Web3(this.provider as any);
 
-		const abi = CryptoSurvey.abi;
-		const deployedAddress = CryptoSurvey.address;
-		const myContract = new web3.eth.Contract(abi, deployedAddress);
-		const accounts = await web3.eth.getAccounts();
-		const defaultAccount = accounts[0];
+    const abi = CryptoSurvey.abi;
+    const deployedAddress = CryptoSurvey.address;
+    const myContract = new web3.eth.Contract(abi, deployedAddress);
+    const accounts = await web3.eth.getAccounts();
+    const defaultAccount = accounts[0];
 
-		try {
-			// Get the current value of my number
-			const myNumber = await myContract.methods.myNumber().call();
-			console.log("myNumber value: " + myNumber);
+    try {
+      // Get the current value of my number
+      const myNumber = await myContract.methods.myNumber().call();
+      console.log("myNumber value: " + myNumber);
 
-			// Increment my number
-			const receipt = await myContract.methods
-				.setMyNumber(BigInt(myNumber as any) + BigInt(1))
-				.send({
-					from: defaultAccount,
-					gas: '1000000',
-					gasPrice: "10000000000",
-				});
-		}catch(e) {
-      console.log(e);
+      // Increment my number
+      const receipt = await myContract.methods
+        .setMyNumber(BigInt(myNumber as any) + BigInt(1))
+        .send({
+          from: defaultAccount,
+          gas: "1000000",
+          gasPrice: "10000000000",
+        });
+    } catch (e) {
+      // console.log(e.message)
     }
   }
 
@@ -81,7 +81,7 @@ export default class EthereumRpc {
     }
   }
 
-  async sendTransaction (): Promise<any> {
+  async sendTransaction(): Promise<any> {
     try {
       const web3 = new Web3(this.provider as any);
 
@@ -96,10 +96,10 @@ export default class EthereumRpc {
         to: destination,
         data: "0x",
         value: amount,
-      }
+      };
 
       // calculate gas transaction before sending
-      transaction = { ...transaction, gas: await web3.eth.estimateGas(transaction)} as any;
+      transaction = { ...transaction, gas: await web3.eth.estimateGas(transaction) } as any;
 
       // Submit transaction to the blockchain and wait for it to be mined
       const receipt = await web3.eth.sendTransaction(transaction);
@@ -146,10 +146,11 @@ export default class EthereumRpc {
 
   toStringJson = (data: any) => {
     // can't serialize a BigInt, so this hack
-    return JSON.parse(JSON.stringify(data, (key, value) =>
-        typeof value === 'bigint'
-            ? value.toString()
-            : value // return everything else unchanged
-    ));
-  }
+    return JSON.parse(
+      JSON.stringify(
+        data,
+        (key, value) => (typeof value === "bigint" ? value.toString() : value) // return everything else unchanged
+      )
+    );
+  };
 }

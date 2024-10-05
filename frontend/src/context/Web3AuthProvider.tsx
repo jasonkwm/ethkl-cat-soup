@@ -14,14 +14,14 @@ import RPC from "./web3RPC"; // for using web3.js
 import Web3 from "web3";
 
 const chainConfig = {
-  chainId: "0x82750",
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  rpcTarget: "https://rpc.scroll.io	",
-  displayName: "Ethereum Mainnet",
-  blockExplorerUrl: "https://scrollscan.com/",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://images.toruswallet.io/eth.svg",
+	chainId: "0x8274f",
+	chainNamespace: CHAIN_NAMESPACES.EIP155,
+	rpcTarget: "https://sepolia-rpc.scroll.io",
+	displayName: "Ethereum Mainnet",
+	blockExplorerUrl: "https://scrollscan.com/",
+	ticker: "ETH",
+	tickerName: "Ethereum",
+	logo: "https://images.toruswallet.io/eth.svg",
 };
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
