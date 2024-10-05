@@ -1,8 +1,13 @@
 "use client";
 import { useParticipantContext } from "@/context/ParticipantProvider";
+import ParticipateSuccess from "./ParticipateSuccess";
 import { downloadIPFS } from "@/utilities/downloadIPFS";
+import { pinJSONToIPFS } from "@/utilities/uploadIPFS";
 import React, { useState, useEffect } from "react";
 import Image from "next/image.js";
+import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
+import { Web3 } from "web3";
+import CryptoSurvey from "@/contract/CryptoSurvey";
 
 type Question = {
   id: number;
@@ -41,7 +46,10 @@ const surveyData = [
 const SelectedSurvey: React.FC = () => {
   const [answers, setAnswers] = useState<{ [key: number]: string }>({});
   const { selectedSurvey, setSelectedSurvey } = useParticipantContext();
+  const { web3AuthProvider, web3Auth, publicKey } = useWeb3AuthContext();
   const [questions, setQuestions] = useState<any>();
+  const [txHash, setTxhash] = useState("");
+  const [submitted, setSubmitted] = useState(false);
   if (!selectedSurvey) return;
   const handleInputChange = (id: number, value: string) => {
     setAnswers((prevAnswers) => ({
@@ -50,26 +58,62 @@ const SelectedSurvey: React.FC = () => {
     }));
   };
 
+  const web3Rpc = new Web3(web3AuthProvider as any);
+
+  const contractAddress = CryptoSurvey.address;
+  const contractAbi = CryptoSurvey.abi; // Your contract ABI
+  const contract = new web3Rpc.eth.Contract(contractAbi, contractAddress);
+
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async function (){
     try {
+      
       let result = await downloadIPFS(selectedSurvey.encryptedCID)
+      
       setQuestions(result)
-      console.log(result)
+      
 
     }
     catch(e) {
       console.log(e.message)
     }
   }
-  if (!questions) 
+  if (!questions) {
     fetchData()
+  }
   },[questions])
-
-  const handleSubmit = (e: React.FormEvent) => {
+  
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    let cid = await pinJSONToIPFS(answers)
+    submitSurveyReplyContractInteraction(cid.IpfsHash)
+    setSubmitted(true);
     // onSubmit(answers);
   };
+
+  const submitSurveyReplyContractInteraction = async (CID) => {
+    const surveyId = selectedSurvey.surveyId;
+    const surveyAddress = publicKey;
+    const encryptedCID = CID;
+
+    try {
+      // console.log("accounts",accounts)
+      const balanceWei = await web3Rpc.eth.getBalance(publicKey);
+      console.log("balanceWei", balanceWei);
+      const tx = await contract.methods
+        .submitSurveyReply(surveyId, surveyAddress, encryptedCID)
+        .send({ from: publicKey, gas: "1000000" });
+      console.log(`Transaction hash: ${tx.transactionHash}`);
+      setTxhash(tx.transactionHash);
+      // console.log(`Transaction receipt: ${tx.receipt}`);
+    } catch (error) {
+      console.error(`Error: ${error}`);
+    }
+}
+
+if (submitted) return <ParticipateSuccess {...{ txHash }} setSelectedSurvey={setSelectedSurvey} />;
 
   return (
     <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg max-w-4xl">
@@ -82,7 +126,9 @@ const SelectedSurvey: React.FC = () => {
       <p className="font-semibold" style={{marginBottom: "0px"}}>{selectedSurvey.name}</p>
       <p>{selectedSurvey.description}</p>
       <form onSubmit={handleSubmit} className="space-y-6">
-        {questions.map((q: any) => (
+        {!questions ? (
+          null
+        ) :questions.map((q: any) => (
           <div key={q.id}>
             <p className="font-semibold text-gray-600 mb-2">{q.question}</p>
             <input

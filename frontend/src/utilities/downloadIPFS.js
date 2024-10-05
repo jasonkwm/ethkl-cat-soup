@@ -1,19 +1,19 @@
-export function downloadIPFS(decrypted) {
-	console.log("DECRYPED: ", decrypted)
+export async function  downloadIPFS(decrypted) {
+	
   const ipfsUrl = process.env.NEXT_PUBLIC_IPFS_Gateway + decrypted;
-  fetch(ipfsUrl)
-    .then((response) => {
+  
+  try {
+      let response = await  fetch(ipfsUrl)
+
       if (!response.ok) {
         console.error("Network response was not ok");
+        return null; // Return null or some error value in case of failure
       }
-      return response.json();
-    })
-    .then((result) => {
-      console.log(result);
-      return result;
-    })
-
-    .catch((error) => {
-      console.error("Error downloading file:" + error);
-    });
+      const result = await response.json();
+      
+      return result; // This is now returned to the caller
+    } catch (error) {
+      console.error("Error downloading file: " + error);
+      return null; // Return null or an error value if the fetch fails
+    }
 }
