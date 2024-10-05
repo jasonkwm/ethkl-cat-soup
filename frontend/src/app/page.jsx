@@ -8,6 +8,8 @@ import { Web3 } from "web3";
 import Image from "next/image.js";
 import { useState, useEffect } from "react";
 import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
+import Link from "next/link";
+import Container from "react-bootstrap/Container";
 
 export default function Home() {
   const { account, setAccount, walletInstalled, setWalletInstalled, provider, setProvider } =
@@ -49,40 +51,97 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="w-90 mx-auto">
-      <div className="border-bottom primary-dark">
-        <Image
-          src="/logo.png"
-          width={500}
-          height={500}
-          alt="logo"
-          style={{ maxWidth: "10%" }}
-        ></Image>
-      </div>
-      <div className="d-flex flex-column justify-content-center vh-100 align-items-center">
-        {account ? (
-          <h5 className="d-flex justify-content-end mt-3">
-            <Badge>{account.slice(0, 7) + "....." + account.slice(-5)}</Badge>
-          </h5>
-        ) : null}
-        <div
-          className="d-flex flex-column justify-content-center align-items-center"
-          style={{ height: "80vh" }}
-        >
-          {web3Auth && web3Auth.connected ? (
-            <SelectionScreen />
-          ) : (
-            <Button onClick={login} className="primary my-2" disabled={isLoggedIn ? true : false}>
-              Connect
-            </Button>
-          )}
-          {walletInstalled ? null : (
-            <Alert className="warning">
-              Wallet Extension Not Installed. Please install Metamask.
-            </Alert>
-          )}
-          {error ? <Alert className="warning">{error}</Alert> : null}
-        </div>
+    <div className="mx-auto" style={{width: "70%"}}>
+	    <nav
+	      className="flex justify-between items-center text-white"
+	      style={{
+	        border: "black solid 0.5px",
+	        borderRadius: "30px 30px 0px 0px",
+	        paddingRight: "25px",
+	      }}
+	    >
+	      <div className="flex space-x-4">
+		    <Link href="/" className="px-4 py-2 rounded-lg transition-colors text-white no-underline">
+		      <img
+		        src="/logo.png"
+		        width={500}
+		        height={500}
+		        alt="logo"
+		        style={{ maxWidth: "20%" }}
+		      ></img>
+		    </Link>
+		  </div>
+		  <div>
+	        {account ? (
+	          <h5>
+	            <Badge>{account.slice(0, 7) + "....." + account.slice(-5)}</Badge>
+	          </h5>
+	        ) : null}
+	        <div>
+	          {web3Auth && web3Auth.connected ? (
+	            <SelectionScreen />
+	          ) : (
+	            <Button onClick={login} className="my-2 bg-white text-black border-white" disabled={isLoggedIn ? true : false}>
+	              Connect
+	            </Button>
+	          )}
+	          {walletInstalled ? null : (
+	            <Alert className="warning">
+	              Wallet extension not installed. Please install Metamask.
+	            </Alert>
+	          )}
+	          {error ? <Alert className="warning">{error}</Alert> : null}
+	        </div>
+	      </div>
+		</nav>
+      <div style={{ padding: "60px 100px", border: "solid 0.5px", borderTop: "0px" }}>
+			  <div className="flex justify-center align-center">
+				  <img
+			        src="/logo.png"
+			        width={500}
+			        height={500}
+			        alt="logo"
+			        style={{ maxWidth: "30%" }}
+			      ></img>
+				  <div style={{margin: "10px 20px", justifyContent: "center", alignItems: "center", padding: "20px"}}>
+				  	<h1>Crypto Survey</h1>
+					<p>Create, distribute, and participate in secure, transparent, and fair surveys, on the blockchain to ensure anonymity and protect data while fostering trust</p>
+				  </div>
+			  </div>
+			  <hr/>
+			  <div className="flex justify-center align-center">
+				  <img
+			        src="/1.png"
+			        alt="1"
+			        style={{ maxWidth: "40%" }}
+			      ></img>
+				  <div style={{margin: "10px 20px", justifyContent: "center", alignItems: "center", padding: "20px"}}>
+				  	<h1>Transparency and Trust</h1>
+					<p>Blockchain’s cryptographic techniques ensure that survey data is securely stored and tamper-proof, reducing the risk of unauthorized access and data breaches. Reducing concerns about bias or data  manipulation from a single entity</p>
+				  </div>
+			  </div>
+			  <div className="flex justify-center align-center">
+				  <div style={{margin: "10px 20px", justifyContent: "center", alignItems: "center", padding: "20px"}}>
+				  	<h1>Accessibility and Inclusivity</h1>
+					<p>A decentralized platform can be accessed globally, allowing more diverse voices, especially from underrepresented communities</p>
+				  </div>
+				  <img
+			        src="/4.png"
+			        alt="1"
+			       	style={{maxWidth: "50%", height: "auto"}}
+			      ></img>
+			  </div>
+			  <div className="flex justify-center align-center">
+				  <img
+			        src="/5.png"
+			        alt="1"
+			       	style={{maxWidth: "50%", height: "auto"}}
+			      ></img>
+				  <div style={{margin: "10px 20px", justifyContent: "center", alignItems: "center", padding: "20px"}}>
+				  	<h1>Incentives for Participation</h1>
+					<p>Smart contracts encoded to automatically distribute reward tokens to users</p>
+				  </div>
+			  </div>
       </div>
     </div>
   );
