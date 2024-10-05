@@ -117,8 +117,18 @@ export default function Replies() {
 	}, [publicKey, survey]);
 
 	useEffect(() => {
-		if (survey) {
-			downloadIPFS(survey.encryptedCID)
+		if (survey && survey.data && Array.isArray(survey.data.surveys)) {
+			console.log("survey.data.surveys:", survey.data.surveys);
+
+			// Loop through each survey in the surveys array
+			survey.data.surveys.forEach((surveyItem) => {
+				if (surveyItem.encryptedCID) {
+					// Call downloadIPFS with the encryptedCID for each survey item
+					let response_data = downloadIPFS(surveyItem.encryptedCID);
+				} else {
+					console.error("No encryptedCID found for survey item", surveyItem);
+				}
+			});
 		}
 
 	}, [survey])

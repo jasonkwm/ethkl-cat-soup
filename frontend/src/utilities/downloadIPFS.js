@@ -1,5 +1,6 @@
 export function downloadIPFS(decrypted) {
-  const ipfsUrl = process.env.IPFS_Gateway + decrypted;
+	console.log("DECRYPED: ", decrypted)
+  const ipfsUrl = process.env.NEXT_PUBLIC_IPFS_Gateway + decrypted;
   fetch(ipfsUrl)
     .then((response) => {
       if (!response.ok) {

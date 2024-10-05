@@ -24,7 +24,7 @@ const Dashboard = () => {
   return (
     <div>
       <h4 className="text-left">Dashboard</h4>
-      <p className="italic">A dashboard to organize and present all your created surveys</p>
+      <p className="italic">A dashboard to look for and participate in surveys</p>
       <div className="space-y-4">
         {surveyList.map((survey: SurveyDetailsType) => (
           <div
