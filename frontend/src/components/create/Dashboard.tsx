@@ -1,8 +1,10 @@
 "use client";
 
+import { useGlobalContext } from "@/context/GlobalProvider";
 import { useSurveyorContext } from "@/context/SurveyorProvider";
 import Link from "next/link";
 import { useState } from "react";
+import { TransactionModalButton } from "../TransactionModal";
 
 // Button (View)
 // - Reply
@@ -21,6 +23,7 @@ type SurveyDetailsType = {
 
 const Dashboard = () => {
   const { surveyList, setToggleReplies } = useSurveyorContext();
+  const { setOpenModal } = useGlobalContext();
   console.log(surveyList);
   return (
     <div>

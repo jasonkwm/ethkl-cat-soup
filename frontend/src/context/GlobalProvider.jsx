@@ -8,6 +8,7 @@ export const GlobalProvider = ({ children }) => {
   const [walletInstalled, setWalletInstalled] = useState(true);
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
 
   return (
     <GlobalContext.Provider
@@ -18,6 +19,8 @@ export const GlobalProvider = ({ children }) => {
         setWalletInstalled,
         provider,
         setProvider,
+        openModal,
+        setOpenModal,
       }}
     >
       {children}
