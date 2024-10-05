@@ -1,5 +1,6 @@
 "use client";
 
+import { useSurveyorContext } from "@/context/SurveyorProvider";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -18,35 +19,8 @@ type SurveyDetailsType = {
   incentive: number;
 };
 
-const dummySurvey: SurveyDetailsType[] = [
-  {
-    pollId: 1,
-    name: "Customer Satisfaction Survey",
-    description: "tomato lorem something something a very long description",
-    image: "",
-    marketReply: 300,
-    incentive: 2,
-  },
-  {
-    pollId: 2,
-    name: "Employee Feedback Survey",
-    description: "tomato lorem something something a very long description",
-    image: "",
-    marketReply: 100,
-    incentive: 3,
-  },
-  {
-    pollId: 3,
-    name: "Product Research Survey",
-    description: "tomato lorem something something a very long description",
-    image: "",
-    marketReply: 700,
-    incentive: 1,
-  },
-];
-
 const Dashboard = () => {
-  const [surveyList, setSurveyList] = useState<SurveyDetailsType[]>(dummySurvey);
+  const { surveyList } = useSurveyorContext();
   return (
     <div className="space-y-4">
       {surveyList.map((survey: SurveyDetailsType) => (
