@@ -13,9 +13,8 @@ export async function pinJSONToIPFS (data) {
       const res = await fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", options)
       const resParsed = await res.json()
       return resParsed
-      
-      
     } catch (error) {
+        console.log("pinJSONToIPFS error:", error.message )
 		return error.message
     }
 }

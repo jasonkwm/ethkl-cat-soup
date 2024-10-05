@@ -69,8 +69,7 @@ export default function Replies() {
     marketReply: 300,
     incentive: 2,
   });
-  const {web3AuthProvider, web3Auth, getAccounts} = useWeb3AuthContext();
-  
+  const {web3AuthProvider, web3Auth, publicKey, web3Rpc} = useWeb3AuthContext();
 
   const web3 = new Web3(web3AuthProvider as any);
 
@@ -78,32 +77,27 @@ export default function Replies() {
   const contractAbi = CryptoSurvey.abi; // Your contract ABI
   const contract = new web3.eth.Contract(contractAbi, contractAddress);
 
+  
   useEffect(()=>{
-    console.log("running use effect")
     
     const url = 'https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest'
-    const query = `{
-      surveys(first: 5) {
-        id
-        surveyId
-        name
-        description
-      }
-      requests(first: 5) {
-        id
-        survey {
-          id
-        }
-        requestAddress
-        description
-      }
-    }`;
-  const fetchData = async () => {
-    try {
+    
+    const fetchData = async () => {
+      try {
+        const query = `{
+          surveys(where: {owner:"${publicKey}"}) {
+            id
+            surveyId
+            name
+            description
+          }
+        }`;
+      // console.log(owner)
+
       const response = await axios.post(
         'https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest',
         {
-          query: query,
+          query: query as string,
           operationName: "Subgraphs",
           variables: {}
         },
@@ -127,20 +121,6 @@ export default function Replies() {
 
   
 
-  
-
-    
-      
-    // })
-    // const useSurveysQuery = (owner: any) => {
-    //   return useQuery({
-    //     queryKey: ['data', owner],
-    //     queryFn: async () => {
-    //       return await request(url, query, { owner });
-    //     },
-    //     enabled: !!owner, // only fetch when owner is available
-    //   });
-    // }
 
   return (
     <div className="m-auto w-[92%] p-6 bg-white rounded-lg shadow-lg mt-4">

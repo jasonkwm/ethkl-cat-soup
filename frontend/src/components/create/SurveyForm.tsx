@@ -7,6 +7,7 @@ import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
 import { pinJSONToIPFS } from "@/utilities/uploadIPFS";
 import CryptoSurvey from "@/contract/CryptoSurvey";
 import {Web3} from "web3";
+import axios from 'axios'
 
 type QuestionType = {
   id: number;
@@ -16,7 +17,7 @@ type QuestionType = {
 
 const SurveyForm: React.FC = () => {
   const { questions, setQuestions } = useSurveyorContext();
-  const {web3AuthProvider, web3Auth, getAccounts} = useWeb3AuthContext();
+  const {web3AuthProvider, web3Auth, publicKey, web3Rpc} = useWeb3AuthContext();
   const [surveyDetails, setSurveyDetails] = useState<any>({
     title: "",
     description: "",
@@ -24,56 +25,18 @@ const SurveyForm: React.FC = () => {
     maxReply: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [txHash, setTxhash] = useState("");
 
   
 
-  const web3 = new Web3(web3AuthProvider as any);
+  // const web3 = new Web3(web3AuthProvider as any);
 
   const contractAddress = CryptoSurvey.address;
   const contractAbi = CryptoSurvey.abi; // Your contract ABI
-  const contract = new web3.eth.Contract(contractAbi, contractAddress);
+  const contract = new web3Rpc.eth.Contract(contractAbi, contractAddress);
+  console.log(publicKey)
   
-  useEffect(()=>{
-    const url = 'https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest'
-    const query = `{
-      surveys(where: {owner:${}) {
-        id
-        surveyId
-        name
-        description
-      }
-      requests(first: 5) {
-        id
-        survey {
-          id
-        }
-        requestAddress
-        description
-      }
-    }`;
-  const fetchData = async () => {
-    try {
-      const response = await axios.post(
-        'https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest',
-        {
-          query: query,
-          operationName: "Subgraphs",
-          variables: {}
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      );
   
-      console.log("response data is : ", response.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-  fetchData();
-  });
 
   // Add a new question
   const handleAddQuestion = () => {
@@ -128,24 +91,25 @@ const SurveyForm: React.FC = () => {
     const imageCID = '';
     const encryptedCID = CID;
 
-    const accounts = await web3.eth.getAccounts();  // Get your wallet account
-    const sender = accounts[0];
+    // const accounts = await web3Rpc.eth.getAccounts();  // Get your wallet account
+    // const sender = accounts[0];
 
     try {
         
-        console.log("accounts",accounts)
-        const balanceWei = await web3.eth.getBalance(sender);
+        // console.log("accounts",accounts)
+        const balanceWei = await web3Rpc.eth.getBalance(publicKey);
         console.log("balanceWei",balanceWei)
         const tx = await contract.methods.createSurvey(maxReply, incentive, name, description, imageCID, encryptedCID)
-            .send({ from: sender, gas: 2000000 });
+            .send({ from: publicKey, gas: 1000000 });
         console.log(`Transaction hash: ${tx.transactionHash}`);
+        setTxhash(tx.transactionHash)
         // console.log(`Transaction receipt: ${tx.receipt}`);
     } catch (error) {
         console.error(`Error: ${error}`);
     }
 }
 
-  if (submitted) return <SurveySuccess />;
+  if (submitted) return <SurveySuccess {...{txHash}} />;
 
   return (
     <div>

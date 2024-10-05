@@ -2,7 +2,12 @@
 
 import { useSurveyorContext } from "@/context/SurveyorProvider";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
+import CryptoSurvey from "@/contract/CryptoSurvey";
+import {Web3} from "web3";
+
+import axios from 'axios';
 
 // Button (View)
 // - Reply
@@ -22,6 +27,53 @@ type SurveyDetailsType = {
 const Dashboard = () => {
   const { surveyList, setToggleReplies } = useSurveyorContext();
   console.log(surveyList);
+  const {web3AuthProvider, web3Auth, publicKey, web3Rpc} = useWeb3AuthContext();
+
+  const web3 = new Web3(web3AuthProvider as any);
+
+  const contractAddress = CryptoSurvey.address;
+  const contractAbi = CryptoSurvey.abi; // Your contract ABI
+  const contract = new web3.eth.Contract(contractAbi, contractAddress);
+
+  
+  useEffect(()=>{
+    
+    const url = 'https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest'
+    
+    const fetchData = async () => {
+      try {
+        const query = `{
+          surveys(where: {owner:"${publicKey}"}) {
+            id
+            surveyId
+            name
+            description
+          }
+        }`;
+      // console.log(owner)
+
+      const response = await axios.post(
+        'https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest',
+        {
+          query: query as string,
+          operationName: "Subgraphs",
+          variables: {}
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+  
+      console.log("response data is : ", response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  fetchData();
+  });
+
   return (
     <div>
       <h4 className="text-left">Dashboard</h4>
