@@ -9,17 +9,17 @@ import { useGlobalContext } from "../context/GlobalProvider.jsx";
 export function SelectionScreen() {
   const { account } = useGlobalContext();
   return (
-    <Container>
-      <div className="mb-5 text-center">
-        <Button>
-          <Link style={{ color: "white", textDecoration: "none" }} href="/surveyor">
+    <Container className="flex justify-end">
+      <div className="text-center">
+        <Button className="bg-white border-white" style={{marginRight: "10px"}}>
+          <Link style={{ color: "black", textDecoration: "none" }} href="/surveyor">
             Create Survey
           </Link>
         </Button>
       </div>
       <div className="text-center">
-        <Button>
-          <Link style={{ color: "white", textDecoration: "none" }} href="/participate">
+        <Button className="bg-white border-white">
+          <Link style={{ color: "black", textDecoration: "none" }} href="/participate">
             Participate in Survey
           </Link>
         </Button>
