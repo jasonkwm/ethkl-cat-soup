@@ -21,7 +21,7 @@ const CreateNavbar = () => {
             src="/logo.png"
             width={500}
             height={500}
-            alt="crypto task"
+            alt="logo"
             style={{ maxWidth: "20%" }}
           ></img>
         </Link>
@@ -29,15 +29,15 @@ const CreateNavbar = () => {
       <div className="flex space-x-4">
         <Link
           href={"/surveyor"}
-          className="px-4 py-2 rounded-lg bg-white hover:bg-[#e4eaf5] transition-all text-black no-underline"
+          className="px-4 py-2 rounded-lg bg-white hover:bg-custom-hover-white transition-all no-underline"
         >
-          <img src="/dashboard.png" alt="crypto task" style={{ width: "25px" }}></img>
+          <img src="/dashboard.png" alt="dashboard" style={{ width: "25px" }}></img>
         </Link>
         <Link
           href={"/surveyor/create"}
-          className="px-4 py-2 rounded-lg bg-white hover:bg-white-600 text-black transition-colors"
+          className="px-4 py-2 rounded-lg bg-white hover:bg-custom-hover-white transition-colors"
         >
-          <img src="/tab.png" alt="crypto task" style={{ width: "25px" }}></img>
+          <img src="/tab.png" alt="tab" style={{ width: "25px" }}></img>
         </Link>
         <button className="px-4 py-2 rounded-lg bg-white hover:bg-white-600 text-black transition-colors">
           {shortenKey(publicKey)}

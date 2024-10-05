@@ -32,10 +32,10 @@ const Dashboard = () => {
             key={survey.pollId}
             className="flex justify-between items-center p-4 bg-gray-100 rounded-lg shadow-md "
           >
-            {/* <img src={survey.image} alt="crypto task" style={{ width: "25px"}}></img> */}
+            {/* <img src={survey.image} alt="survey" style={{ width: "25px"}}></img> */}
             <div>
               <div className="flex">
-                <img src="browser.png" alt="crypto task" style={{ width: "25px" }}></img>
+                <img src="browser.png" alt="browser" style={{ width: "25px" }}></img>
                 <span className="ptext-lg" style={{ paddingLeft: "10px" }}>
                   {survey.name}
                 </span>
@@ -43,7 +43,7 @@ const Dashboard = () => {
               <div className="flex">
                 <img
                   src="information.png"
-                  alt="crypto task"
+                  alt="information"
                   style={{ width: "25px", height: "25px" }}
                 ></img>
                 <p style={{ paddingLeft: "10px" }}>{survey.description}</p>
@@ -52,7 +52,7 @@ const Dashboard = () => {
             <div>
               <img
                 src="email.png"
-                alt="crypto task"
+                alt="email"
                 style={{ width: "25px", height: "25px" }}
               ></img>
               <p className="text-center">{survey.marketReply}</p>
@@ -60,7 +60,7 @@ const Dashboard = () => {
             <div>
               <img
                 src="dollar.png"
-                alt="crypto task"
+                alt="dollar"
                 style={{ width: "25px", height: "25px" }}
               ></img>
               <p className="text-center">{survey.incentive}</p>
@@ -69,16 +69,16 @@ const Dashboard = () => {
               <Link
                 href={"/surveyor/view"}
                 onClick={() => setToggleReplies(true)}
-                className="px-4 py-2 bg-custom-dark-brown text-white rounded-lg hover:bg-custom-dark-brown transition-colors text-white no-underline"
+                className="px-4 py-2 bg-custom-dark-brown text-white rounded-lg hover:bg-custom-light-brown transition-colors text-white no-underline"
               >
-                <img src="/eye.png" alt="crypto task" style={{ width: "25px" }}></img>
+                <img src="/eye.png" alt="eye" style={{ width: "25px" }}></img>
               </Link>
               <Link
                 href={"/surveyor/view"}
-                className="px-4 py-2 bg-custom-dark-brown text-white rounded-lg hover:bg-custom-dark-brown transition-colors"
+                className="px-4 py-2 bg-custom-dark-brown text-white rounded-lg hover:bg-custom-light-brown transition-colors"
                 onClick={() => setToggleReplies(false)}
               >
-                <img src="/bell.png" alt="crypto task" style={{ width: "25px" }}></img>
+                <img src="/bell.png" alt="bell" style={{ width: "25px" }}></img>
               </Link>
             </div>
           </div>

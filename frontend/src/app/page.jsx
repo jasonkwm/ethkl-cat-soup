@@ -39,7 +39,7 @@ export default function Home() {
           src="/logo.png"
           width={500}
           height={500}
-          alt="crypto task"
+          alt="logo"
           style={{ maxWidth: "10%" }}
         ></Image>
       </div>

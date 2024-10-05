@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image.js";
 
 const surveyData = [
   {
@@ -60,19 +61,28 @@ export default function Replies() {
   });
   return (
     <div className="m-auto w-[92%] p-6 bg-white rounded-lg shadow-lg mt-4">
-      <h1 className="text-2xl font-bold mb-4 text-gray-800 text-center">{survey.name}</h1>
-      <p className="text-lg text-gray-600">{survey.description}</p>
-      <div className="max-w-lg mx-auto p-4">
-        <h1 className="text-2xl font-bold text-center mb-6">Survey Questions</h1>
-        <ul className="space-y-4">
+      <p className="font-semibold">{survey.name}</p>
+      <p className="text-gray-600">{survey.description}</p>
+      <div className="mx-auto">
+        <p className="font-semibold mb-6">Survey Questions</p>
+        <ul style={{paddingLeft: "0px"}}>
           {surveyData.map((item, index) => (
-            <li key={index} className="p-4 bg-white rounded-lg shadow-md border border-gray-200">
-              <h2 className="text-lg font-semibold">{item.question}</h2>
-              <p className="text-gray-600">Responses:</p>
-              <ul className="list-disc pl-5">
+            <li key={index} className="p-4 bg-white rounded-lg shadow-md border border-gray-200" style={{marginBottom: "15px"}}>
+			  <div className="flex">
+				  <Image src="/letter-q.png" width={500} height={500} alt="letter-q" style={{ width: "25px", height: "25px", marginRight: "10px" }}></Image>
+	              <p className="font-semibold">{item.question}</p>
+			  </div>
+			  <div className="flex">
+				  <Image src="/a.png" width={500} height={500} alt="letter-a" style={{ width: "25px", height: "25px", marginRight: "10px" }}></Image>
+	              <p className="font-semibold">Responses:</p>
+			  </div>
+              <ul className="list-none pl-5">
                 {item.answers.map((response, userIndex) => (
                   <li key={userIndex} className="text-gray-800">
-                    <strong>{response.user}</strong>: {response.answer}
+					<div className="flex">
+						<Image src="/user.png" width={500} height={500} alt="letter-a" style={{ width: "28px", height: "28px", marginRight: "10px", display: "flex", justifyContent: "center", alignItems: "center", padding: "5px 5px" }}></Image>
+	                    <strong>{response.user}</strong>: {response.answer}
+					</div>
                   </li>
                 ))}
               </ul>

@@ -1,4 +1,5 @@
 import { useSurveyorContext } from "@/context/SurveyorProvider";
+import Image from "next/image.js";
 
 // who
 export default function Requests() {
@@ -20,32 +21,33 @@ export default function Requests() {
 
   return (
     <div className="m-auto w-[92%] p-6 bg-white rounded-lg shadow-lg mt-4">
-      <h1 className="text-2xl font-bold mb-4 text-gray-800 text-center">Survey User Requests</h1>
-      <ul className="space-y-4">
+      <p className="font-semibold text-gray-800">Survey user requests</p>
+      <ul className="space-y-4" style={{paddingLeft: "0px"}}>
         {requestList.map((request: any, index: any) => (
           <li key={index} className="p-4 bg-white rounded-lg shadow-md border border-gray-200">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-              <div>
-                <p className="text-md font-semibold text-gray-700">
-                  Public Key: {shortenPublicKey(request.publicKey)}
+              <div className="flex">
+			    <Image src="/key.png" width={500} height={500} alt="key" style={{ width: "25px", height: "25px", marginRight: "10px" }}></Image>
+                <p className="text-gray-500">
+                  {shortenPublicKey(request.publicKey)}
                 </p>
-                <p className="text-sm text-gray-500">Requested Survey: {request.surveyName}</p>
-              </div>
+			  </div>
               <div className="mt-4 md:mt-0 flex space-x-4">
                 <button
                   onClick={() => handleAccept(request.publicKey)}
-                  className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
+                  className="px-2 py-2 bg-custom-dark-brown rounded-md hover:bg-custom-light-brown transition"
                 >
-                  Accept
+                  <Image src="/checked.png" width={500} height={500} alt="key" style={{ width: "25px", height: "25px" }}></Image>
                 </button>
                 <button
                   onClick={() => handleDecline(request.publicKey)}
-                  className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                  className="px-2 py-2 bg-custom-dark-brown rounded-md hover:bg--custom-light-brown transition"
                 >
-                  Decline
+                  <Image src="/cross-button.png" width={500} height={500} alt="key" style={{ width: "25px", height: "25px" }}></Image>
                 </button>
               </div>
             </div>
+			<p className="text-sm text-gray-500">Requested Survey: {request.surveyName}</p>
           </li>
         ))}
       </ul>
