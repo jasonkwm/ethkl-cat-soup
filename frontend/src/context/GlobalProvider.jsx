@@ -7,6 +7,7 @@ export const GlobalProvider = ({ children }) => {
   const [account, setAccount] = useState("");
   const [walletInstalled, setWalletInstalled] = useState(true);
   const [provider, setProvider] = useState(null);
+  const [contract, setContract] = useState(null);
 
   return (
     <GlobalContext.Provider

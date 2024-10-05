@@ -17,6 +17,8 @@ contract CryptoSurvey is AccessControl, ERC1155 {
    
     event CreateSurveyEvent(uint surveyId, string name, string description, string imageCID, string encryptedCID, address surveyAddress);
     event CreateSurveyMetadataEvent(uint surveyId, uint maxReply, uint incentive, address owner);
+    event CreateRequestEvent(uint surveyId, address requestAddress, string description, string publicKey);
+    event CreatePermissionEvent(uint surveyId, address requestAddress, string encryptedCID);
     
     struct Survey {
         uint surveyId;
@@ -44,6 +46,7 @@ contract CryptoSurvey is AccessControl, ERC1155 {
         uint surveyId;
         address requestAddress;
         string description;
+        string publicKey;
     }
 
     
@@ -72,6 +75,20 @@ contract CryptoSurvey is AccessControl, ERC1155 {
         // _surveyId +2 due to survey gating mechanism for request and reply
         _surveyId += 2;
     }
+
+    //created by User who wants to participate in survey
+    function createRequest(uint surveyId, address surveyAddress, string calldata description, string calldata publicKey) public {
+        //returns error if duplicate request or invalid request due to token gating mechanism. 
+        require(balanceOf(msg.sender, surveyId) == 0, "Duplicate request, approval outstanding");
+        require(balanceOf(msg.sender, surveyId + 1) == 0, "Invalid request, survey reply outstanding");
+        require(msg.sender != surveyMetadata[surveyId].owner, "Can't respond to your own survey");
+        //request toll gate nft
+        _mint(msg.sender, surveyId, 1, "");
+        requests[surveyAddress].push(Request(surveyId, msg.sender, description, publicKey));
+        emit CreateRequestEvent(surveyId, msg.sender, description, publicKey);
+    }
+
+    
     
 
     
