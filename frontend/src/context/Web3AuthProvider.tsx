@@ -41,11 +41,6 @@ interface Web3AuthContextType {
 }
 
 const Web3AuthContext = createContext<Web3AuthContextType | undefined>(undefined);
-const web3AuthInstance = new Web3AuthNoModal({
-	clientId: "BAc5PRf-Nkjn-R-XkaNZH1mpEP4A-yVqun0G9eEa6YGb11_iT53AASOE1b80Og2R-z9cqu3s9MZw5l3FEgCccK8",
-	web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-	privateKeyProvider,
-});
 const isConnected = async (web3auth: any) => {
 	if (!web3auth) {
 		console.log("web3auth not initialized yet");
@@ -57,7 +52,7 @@ const isConnected = async (web3auth: any) => {
 
 export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [web3Auth, setWeb3Auth] = useState(web3AuthInstance);
+	const [web3Auth, setWeb3Auth] = useState<any>();
 	const [web3AuthProvider, setWeb3AuthProvider] = useState<IProvider | null>(null);
 	const [userInfo, setUserInfo] = useState<any>();
 
@@ -68,10 +63,12 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 		const init = async () => {
 			try {
 				// await web3Auth.initModal();
+				const web3AuthInstance = new Web3AuthNoModal({
+					clientId: "BAc5PRf-Nkjn-R-XkaNZH1mpEP4A-yVqun0G9eEa6YGb11_iT53AASOE1b80Og2R-z9cqu3s9MZw5l3FEgCccK8",
+					web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+					privateKeyProvider,
+				});
 				const authAdapter = new AuthAdapter({
-					loginSettings: {
-						mfaLevel: "optional",
-					},
 					adapterSettings: {
 						uxMode: UX_MODE.REDIRECT,
 						loginConfig: {
@@ -81,45 +78,23 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 								clientId: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
 							},
 						},
-						mfaSettings: {
-							deviceShareFactor: {
-								enable: true,
-								priority: 1,
-								mandatory: true,
-							},
-							backUpShareFactor: {
-								enable: true,
-								priority: 2,
-								mandatory: false,
-							},
-							socialBackupFactor: {
-								enable: true,
-								priority: 3,
-								mandatory: false,
-							},
-							passwordFactor: {
-								enable: true,
-								priority: 4,
-								mandatory: true,
-							},
-						},
 					},
 				});
-				web3Auth.configureAdapter(authAdapter);
-				setWeb3Auth(web3Auth)
-				await web3Auth.init();
-				setWeb3AuthProvider(web3Auth.provider);
-				if (web3Auth.connected) {
-					const user = await web3Auth.getUserInfo();
+				web3AuthInstance.configureAdapter(authAdapter);
+				setWeb3Auth(web3AuthInstance)
+				await web3AuthInstance.init();
+				setWeb3AuthProvider(web3AuthInstance.provider);
+				if (web3AuthInstance.connected) {
+					const user = await web3AuthInstance.getUserInfo();
 					setUserInfo(user);
 					setIsLoggedIn(true);
 
 					console.log("userInfo", user);
 					console.log("web3authProvider", web3AuthProvider);
-					console.log("web3auth", web3Auth);
+					console.log("web3auth", web3AuthInstance);
 					console.log("idtoken: ", user.idToken);
 					console.log("auth0token: ", user.oAuthIdToken);
-					const rpc = new RPC(web3Auth.provider)
+					const rpc = new RPC(web3AuthInstance.provider)
 					console.log("Wallet Address: ", rpc.getAccounts())
 					console.log("Private Key: ", rpc.getPrivateKey())
 
@@ -133,7 +108,7 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 	}, []);
 
 	useEffect(() => {
-		if (web3Auth.connected) {
+		if (web3Auth && web3Auth.connected) {
 			setIsLoggedIn(true);
 		}
 	}, [web3Auth]);
@@ -252,7 +227,7 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 		uiConsole(privateKey);
 	};
 
-//WARN: -------------------------------------------------------------------------------------------------------------
+	//WARN: -------------------------------------------------------------------------------------------------------------
 
 	return (
 		<Web3AuthContext.Provider
