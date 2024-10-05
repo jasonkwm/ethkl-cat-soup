@@ -15,7 +15,7 @@ export default function Home() {
   const [error, setError] = useState("");
   // const { isLoggedIn, userInfo } = useWeb3AuthContext();
 	
-	const {isLoggedIn, setIsLoggedIn, web3Auth, setWeb3Auth, web3AuthProvider, setWeb3AuthProvider, userInfo, setUserInfo, signMessage, getAccounts, getPrivateKey, sendTransaction, getBalance, getUserInfo, login,} = useWeb3AuthContext
+	const {isLoggedIn, setIsLoggedIn, web3Auth, setWeb3Auth, web3AuthProvider, setWeb3AuthProvider, userInfo, setUserInfo, signMessage, getAccounts, getPrivateKey, sendTransaction, getBalance, getUserInfo, login,} = useWeb3AuthContext()
   // console.log("userInfo");
 
   // if (!isLoggedIn && !userInfo) return;
