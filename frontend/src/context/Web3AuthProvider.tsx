@@ -132,7 +132,7 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 	//WARN: --------------------------------------------------------------------------------------
 	const login = async () => {
 		if (!web3Auth) {
-			uiConsole("web3Auth not initialized yet");
+			console.log("web3Auth not initialized yet");
 			return;
 		}
 		const web3authProvider = await web3Auth.connectTo(WALLET_ADAPTERS.AUTH, {
@@ -149,7 +149,7 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	const logout = async () => {
 		if (!web3Auth) {
-			uiConsole("web3Auth not initialized yet");
+			console.log("web3Auth not initialized yet");
 			return;
 		}
 		await web3Auth.logout();
@@ -159,70 +159,70 @@ export const Web3AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	const authenticateUser = async () => {
 		if (!web3Auth) {
-			uiConsole("web3Auth not initialized yet");
+			console.log("web3Auth not initialized yet");
 			return;
 		}
 		const idToken = await web3Auth.authenticateUser();
-		uiConsole(idToken);
+		console.log(idToken);
 	};
 
 	const getUserInfo = async () => {
 		if (!web3Auth) {
-			uiConsole("web3Auth not initialized yet");
+			console.log("web3Auth not initialized yet");
 			return;
 		}
 		const user = await web3Auth.getUserInfo();
-		uiConsole(user);
+		console.log(user);
 	};
 
 	const getChainId = async () => {
 		if (!web3AuthProvider) {
-			uiConsole("web3AuthProvider not initialized yet");
+			console.log("web3AuthProvider not initialized yet");
 			return;
 		}
 		const rpc = new RPC(web3AuthProvider);
 		const chainId = await rpc.getChainId();
-		uiConsole(chainId);
+		console.log(chainId);
 	};
 
 	const getAccounts = async () => {
 		if (!web3AuthProvider) {
-			uiConsole("web3AuthProvider not initialized yet");
+			console.log("web3AuthProvider not initialized yet");
 			return;
 		}
 		const rpc = new RPC(web3AuthProvider);
 		const address = await rpc.getAccounts();
-		uiConsole(address);
+		console.log(address);
 	};
 
 	const getBalance = async () => {
 		if (!web3AuthProvider) {
-			uiConsole("web3AuthProvider not initialized yet");
+			console.log("web3AuthProvider not initialized yet");
 			return;
 		}
 		const rpc = new RPC(web3AuthProvider);
 		const balance = await rpc.getBalance();
-		uiConsole(balance);
+		console.log(balance);
 	};
 
 	const sendTransaction = async () => {
 		if (!web3AuthProvider) {
-			uiConsole("web3AuthProvider not initialized yet");
+			console.log("web3AuthProvider not initialized yet");
 			return;
 		}
 		const rpc = new RPC(web3AuthProvider);
 		const receipt = await rpc.sendTransaction();
-		uiConsole(receipt);
+		console.log(receipt);
 	};
 
 	const signMessage = async () => {
 		if (!web3AuthProvider) {
-			uiConsole("web3AuthProvider not initialized yet");
+			console.log("web3AuthProvider not initialized yet");
 			return;
 		}
 		const rpc = new RPC(web3AuthProvider);
 		const signedMessage = await rpc.signMessage();
-		uiConsole(signedMessage);
+		console.log(signedMessage);
 	};
 
 	function uiConsole(...args: any[]): void {
