@@ -9,7 +9,7 @@ const Toggler: React.FC = () => {
       <button
         onClick={() => setToggleReplies(true)}
         className={`px-4 py-2 rounded-full bg-slate-200 transition-colors text-white no-underline ${
-          toggleReplies ? "!bg-blue-500 hover:bg-blue-500" : ""
+          toggleReplies ? "!bg-custom-dark-brown hover:bg-custom-dark-brown" : ""
         }`}
         disabled={toggleReplies}
       >
@@ -18,7 +18,7 @@ const Toggler: React.FC = () => {
       <button
         onClick={() => setToggleReplies(false)}
         className={`px-4 py-2 rounded-full bg-slate-200 transition-colors text-white no-underline ${
-          !toggleReplies ? "!bg-blue-500 hover:bg-blue-500" : ""
+          !toggleReplies ? "!bg-custom-dark-brown hover:bg-custom-dark-brown" : ""
         }`}
         disabled={!toggleReplies}
       >

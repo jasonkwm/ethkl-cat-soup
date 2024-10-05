@@ -2,6 +2,7 @@
 import { useSurveyorContext } from "@/context/SurveyorProvider";
 import React, { useState } from "react";
 import SurveySuccess from "./SurveySucess";
+import Image from "next/image.js";
 
 type QuestionType = {
   id: number;
@@ -42,8 +43,9 @@ const SurveyForm: React.FC = () => {
   if (submitted) return <SurveySuccess />;
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold text-center mb-6">Create Survey</h1>
+    <div>
+	  <h4 className="text-left">Create Survey</h4>
+      <p className="italic">Create surveys by adding as many questions as you like</p>
       {questions.map((question) => (
         <div key={question.id} className="mb-4 p-4 border rounded-md bg-gray-50">
           <label className="block mb-2 text-sm font-semibold text-gray-700">Question:</label>
@@ -67,25 +69,27 @@ const SurveyForm: React.FC = () => {
 
           <button
             onClick={() => handleRemoveQuestion(question.id)}
-            className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+            className="mt-4 px-4 py-2 bg-custom-dark-brown rounded-md hover:bg-custom-light-brown transition"
           >
-            Remove Question
+            <Image src="/trash.png" width={500} height={500} alt="trash" style={{ width: "25px", height: "25px" }}></Image>
           </button>
         </div>
       ))}
-
-      <button
-        onClick={handleAddQuestion}
-        className="w-full mt-6 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
-      >
-        Add Question
-      </button>
-      <button
-        onClick={handleSurveySubmission}
-        className="w-full mt-6 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-blue-600 transition"
-      >
-        Submit Survey
-      </button>
+	  <div className="flex justify-end">
+	      <button
+	        onClick={handleAddQuestion}
+	        className="mt-6 px-4 py-2 bg-custom-dark-brown rounded-md hover:bg-custom-light-brown transition"
+	      >
+	        <Image src="/add.png" width={500} height={500} alt="add" style={{ width: "25px", height: "25px" }}></Image>
+	      </button>
+	      <button
+	        onClick={handleSurveySubmission}
+	        className="mt-6 px-4 py-2 bg-custom-dark-brown rounded-md hover:bg-custom-light-brown transition"
+			style={{marginLeft: "10px"}}
+	      >
+	       <Image src="/upload.png" width={500} height={500} alt="add" style={{ width: "25px", height: "25px" }}></Image>
+	      </button>
+	  </div>
     </div>
   );
 };

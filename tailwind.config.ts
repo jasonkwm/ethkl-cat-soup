@@ -11,7 +11,7 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-		'custom-light-brown': '#fffaeb',
+		'custom-light-brown': '#d9ad62',
 		'custom-mid-brown': '#f4d59b',
 		'custom-dark-brown': '#e0b15e',
 		'custom-hover-white': '#e4eaf5',
