@@ -5,9 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
 import CryptoSurvey from "@/contract/CryptoSurvey";
-import {Web3} from "web3";
-
-import axios from 'axios';
+import { Web3 } from "web3";
 
 // Button (View)
 // - Reply
@@ -27,7 +25,7 @@ type SurveyDetailsType = {
 const Dashboard = () => {
   const { surveyList, setToggleReplies } = useSurveyorContext();
   console.log(surveyList);
-  const {web3AuthProvider, web3Auth, publicKey, web3Rpc} = useWeb3AuthContext();
+  const { web3AuthProvider, web3Auth, publicKey, web3Rpc } = useWeb3AuthContext();
 
   const web3 = new Web3(web3AuthProvider as any);
 
@@ -35,11 +33,9 @@ const Dashboard = () => {
   const contractAbi = CryptoSurvey.abi; // Your contract ABI
   const contract = new web3.eth.Contract(contractAbi, contractAddress);
 
-  
-  useEffect(()=>{
-    
-    const url = 'https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest'
-    
+  useEffect(() => {
+    const url = "https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest";
+
     const fetchData = async () => {
       try {
         const query = `{
@@ -50,28 +46,34 @@ const Dashboard = () => {
             description
           }
         }`;
-      // console.log(owner)
+        // console.log(owner)
 
-      const response = await axios.post(
-        'https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest',
-        {
-          query: query as string,
-          operationName: "Subgraphs",
-          variables: {}
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
+        const response = await fetch(
+          "https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              query: query as string,
+              operationName: "Subgraphs",
+              variables: {},
+            }),
           }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-      );
-  
-      console.log("response data is : ", response.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-  fetchData();
+
+        const data = await response.json();
+        console.log("response data is : ", data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
   });
 
   return (
@@ -102,19 +104,11 @@ const Dashboard = () => {
               </div>
             </div>
             <div>
-              <img
-                src="email.png"
-                alt="email"
-                style={{ width: "25px", height: "25px" }}
-              ></img>
+              <img src="email.png" alt="email" style={{ width: "25px", height: "25px" }}></img>
               <p className="text-center">{survey.marketReply}</p>
             </div>
             <div>
-              <img
-                src="dollar.png"
-                alt="dollar"
-                style={{ width: "25px", height: "25px" }}
-              ></img>
+              <img src="dollar.png" alt="dollar" style={{ width: "25px", height: "25px" }}></img>
               <p className="text-center">{survey.incentive}</p>
             </div>
             <div className="flex flex-row gap-2">
