@@ -1,6 +1,8 @@
 "use client";
 import { useParticipantContext } from "@/context/ParticipantProvider";
-import React, { useState } from "react";
+import { downloadIPFS } from "@/utilities/downloadIPFS";
+import React, { useState, useEffect } from "react";
+import Image from "next/image.js";
 
 type Question = {
   id: number;
@@ -39,7 +41,7 @@ const surveyData = [
 const SelectedSurvey: React.FC = () => {
   const [answers, setAnswers] = useState<{ [key: number]: string }>({});
   const { selectedSurvey, setSelectedSurvey } = useParticipantContext();
-  const [questions, setQuestions] = useState<any>(surveyData);
+  const [questions, setQuestions] = useState<any>();
   if (!selectedSurvey) return;
   const handleInputChange = (id: number, value: string) => {
     setAnswers((prevAnswers) => ({
@@ -47,6 +49,22 @@ const SelectedSurvey: React.FC = () => {
       [id]: value,
     }));
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+    try {
+      let result = await downloadIPFS(selectedSurvey.encryptedCID)
+      setQuestions(result)
+      console.log(result)
+
+    }
+    catch(e) {
+      console.log(e.message)
+    }
+  }
+  if (!questions) 
+    fetchData()
+  },[questions])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,30 +75,30 @@ const SelectedSurvey: React.FC = () => {
     <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg max-w-4xl">
       <button
         onClick={() => setSelectedSurvey(null)}
-        className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+        className="px-4 py-2 mb-8 bg-custom-dark-brown rounded-md hover:bg-custom-light-brown transition"
       >
-        Back
+         <Image src="/arrow.png" width={500} height={500} alt="arrow" style={{ width: "25px", height: "25px" }}></Image>
       </button>
-      <h1 className="text-2xl font-bold text-gray-800 mb-4">{selectedSurvey.name}</h1>
+      <p className="font-semibold" style={{marginBottom: "0px"}}>{selectedSurvey.name}</p>
       <p>{selectedSurvey.description}</p>
       <form onSubmit={handleSubmit} className="space-y-6">
         {questions.map((q: any) => (
-          <div key={q.id} className="p-4 border rounded-md bg-gray-50">
-            <h2 className="text-lg font-semibold text-gray-700 mb-2">{q.question}</h2>
+          <div key={q.id}>
+            <p className="font-semibold text-gray-600 mb-2">{q.question}</p>
             <input
               type="text"
               value={answers[q.id] || ""}
               onChange={(e) => handleInputChange(q.id, e.target.value)}
-              placeholder="Type your answer here..."
+              placeholder="typing..."
               className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
             />
           </div>
         ))}
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+          className="px-4 py-2 bg-custom-dark-brown rounded-md hover:bg-custom-light-brown transition"
         >
-          Submit Answers
+          <Image src="/upload.png" width={500} height={500} alt="upload" style={{ width: "25px", height: "25px" }}></Image>
         </button>
       </form>
     </div>
