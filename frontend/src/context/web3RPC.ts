@@ -51,14 +51,16 @@ export default class EthereumRpc {
 
 			// Increment my number
 			const receipt = await myContract.methods
-				.setMyNumber(BigInt(myNumber) + 1n)
+				.setMyNumber(BigInt(myNumber as any) + BigInt(1))
 				.send({
 					from: defaultAccount,
-					gas: 1000000,
+					gas: '1000000',
 					gasPrice: "10000000000",
 				});
-		}
-	}
+		}catch(e) {
+      console.log(e);
+    }
+  }
 
   async getBalance(): Promise<string> {
     try {
