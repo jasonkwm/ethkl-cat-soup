@@ -5,7 +5,6 @@ import { GlobalProvider } from "@/context/GlobalProvider";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Web3AuthProvider } from "@/context/Web3AuthProvider";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
-import RPC from "./web3RPC"; // for using web3.js
 
 export const metadata: Metadata = {
   title: "Create Next App",
