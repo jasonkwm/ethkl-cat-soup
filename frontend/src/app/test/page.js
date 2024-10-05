@@ -13,7 +13,7 @@ export default function Test() {
         fetch('/api/uploadSurvey', {
           method: 'POST',
           contentType:"application/json",
-          body: JSON.stringify({name:document.getElementById("name").value, age:document.getElementById("age").value}),
+          body: JSON.stringify([{id:1,question:"Do you have access to health insurance?",description:"Yes/No" },{id:2,question:"Have you experienced any difficulty in accessing healthcare services in the past year?",description:"Yes/No" }, {id:3,question:"Have you received a flu shot in the past year?",description:"Yes/No" },{id:4,question:"Do you undergo regular screenings for diseases",description:"(e.g., cancer, heart disease)?" },{id:5,question:"How frequently do you engage in recreational physical activities",description:"(e.g., sports, walking)?" },{id:6,question:"Do you undergo regular screenings for diseases (e.g., cancer, heart disease)?",description:"(e.g., cancer, heart disease)" }]),
       }).then(result=>{
         return result.json()
        
