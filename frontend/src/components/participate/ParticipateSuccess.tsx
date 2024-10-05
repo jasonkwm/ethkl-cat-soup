@@ -1,7 +1,12 @@
 import Link from "next/link";
 import React from "react";
 
-const ParticipateSuccess: React.FC<any> = ({txHash, setSelectedSurvey}:{txHash:string}) => {
+interface ParticipateSuccessProps {
+  txHash: string;
+  setSelectedSurvey: (survey: null) => void; // Adjust the type of setSelectedSurvey
+}
+
+const ParticipateSuccess: React.FC<ParticipateSuccessProps> = ({txHash, setSelectedSurvey}) => {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <div className="bg-white p-8 rounded-lg shadow-md text-center">
