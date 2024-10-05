@@ -21,6 +21,7 @@ const config: Config = {
       },
 	  width: {
         '70': '70%',
+		'90': '90%',
       },
     },
   },
