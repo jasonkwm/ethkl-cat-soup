@@ -2,6 +2,16 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image.js";
+import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
+import CryptoSurvey from "@/contract/CryptoSurvey";
+import {Web3} from "web3";
+
+import axios from 'axios';
+
+// import { useQueryClient } from '@tanstack/react-query';
+
+
+
 
 const surveyData = [
   {
@@ -59,10 +69,78 @@ export default function Replies() {
     marketReply: 300,
     incentive: 2,
   });
+  const {web3AuthProvider, web3Auth, getAccounts} = useWeb3AuthContext();
+  
+
+  const web3 = new Web3(web3AuthProvider as any);
+
+  const contractAddress = CryptoSurvey.address;
+  const contractAbi = CryptoSurvey.abi; // Your contract ABI
+  const contract = new web3.eth.Contract(contractAbi, contractAddress);
 
   useEffect(()=>{
-    async function
-  })
+    console.log("running use effect")
+    
+    const url = 'https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest'
+    const query = `{
+      surveys(first: 5) {
+        id
+        surveyId
+        name
+        description
+      }
+      requests(first: 5) {
+        id
+        survey {
+          id
+        }
+        requestAddress
+        description
+      }
+    }`;
+  const fetchData = async () => {
+    try {
+      const response = await axios.post(
+        'https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest',
+        {
+          query: query,
+          operationName: "Subgraphs",
+          variables: {}
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+  
+      console.log("response data is : ", response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  fetchData();
+  });
+  
+  
+
+
+  
+
+  
+
+    
+      
+    // })
+    // const useSurveysQuery = (owner: any) => {
+    //   return useQuery({
+    //     queryKey: ['data', owner],
+    //     queryFn: async () => {
+    //       return await request(url, query, { owner });
+    //     },
+    //     enabled: !!owner, // only fetch when owner is available
+    //   });
+    // }
 
   return (
     <div className="m-auto w-[92%] p-6 bg-white rounded-lg shadow-lg mt-4">

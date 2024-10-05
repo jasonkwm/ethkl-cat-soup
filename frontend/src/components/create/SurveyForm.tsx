@@ -1,6 +1,6 @@
 "use client";
 import { useSurveyorContext } from "@/context/SurveyorProvider";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SurveySuccess from "./SurveySucess";
 import Image from "next/image.js";
 import { useWeb3AuthContext } from "@/context/Web3AuthProvider";
@@ -24,6 +24,57 @@ const SurveyForm: React.FC = () => {
     maxReply: "",
   });
   const [submitted, setSubmitted] = useState(false);
+
+  
+
+  const web3 = new Web3(web3AuthProvider as any);
+
+  const contractAddress = CryptoSurvey.address;
+  const contractAbi = CryptoSurvey.abi; // Your contract ABI
+  const contract = new web3.eth.Contract(contractAbi, contractAddress);
+  
+  useEffect(()=>{
+    const url = 'https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest'
+    const query = `{
+      surveys(where: {owner:${}) {
+        id
+        surveyId
+        name
+        description
+      }
+      requests(first: 5) {
+        id
+        survey {
+          id
+        }
+        requestAddress
+        description
+      }
+    }`;
+  const fetchData = async () => {
+    try {
+      const response = await axios.post(
+        'https://api.studio.thegraph.com/query/90761/cryptosurveyv1/version/latest',
+        {
+          query: query,
+          operationName: "Subgraphs",
+          variables: {}
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+  
+      console.log("response data is : ", response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  fetchData();
+  });
+
   // Add a new question
   const handleAddQuestion = () => {
     const newQuestion: QuestionType = {
@@ -34,11 +85,7 @@ const SurveyForm: React.FC = () => {
     setQuestions([...questions, newQuestion]);
   };
 
-  const web3 = new Web3(web3AuthProvider as any);
-
-const contractAddress = CryptoSurvey.address;
-const contractAbi = CryptoSurvey.abi; // Your contract ABI
-const contract = new web3.eth.Contract(contractAbi, contractAddress);
+  
 
   const handleSurveySubmission = async function(){
     try {
