@@ -5,7 +5,7 @@ export async function pinJSONToIPFS (data) {
     const options = {
         method: 'POST',
         headers: {
-            Authorization: `Bearer ${process.env.IPFS_API}`, 
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_IPFS_API}`, 
             'Content-Type': 'application/json'},
             body: JSON.stringify({pinataOptions:{cidVersion:1},pinataContent:data})
     }

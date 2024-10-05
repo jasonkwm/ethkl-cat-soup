@@ -58,6 +58,9 @@ export default class EthereumRpc {
 					gasPrice: "10000000000",
 				});
 		}
+    catch(e) {
+      console.log(e.message)
+    }
 	}
 
   async getBalance(): Promise<string> {

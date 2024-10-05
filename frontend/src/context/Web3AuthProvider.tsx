@@ -7,9 +7,9 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 import RPC from "./web3RPC"; // for using web3.js
 
 const chainConfig = {
-	chainId: "0x82750",
+	chainId: "0x8274f",
 	chainNamespace: CHAIN_NAMESPACES.EIP155,
-	rpcTarget: "https://rpc.scroll.io	",
+	rpcTarget: "https://sepolia-rpc.scroll.io",
 	displayName: "Ethereum Mainnet",
 	blockExplorerUrl: "https://scrollscan.com/",
 	ticker: "ETH",

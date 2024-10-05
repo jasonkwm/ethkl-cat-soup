@@ -3,6 +3,7 @@
 import Button from "react-bootstrap/Button";
 import {encryptCID, decryptCID} from "../../utilities/encryption"
 import { useGlobalContext } from "../../context/GlobalProvider.jsx";
+import { pinJSONToIPFS } from "@/utilities/uploadIPFS";
 
 export default function Test() {
   const {provider } = useGlobalContext();
@@ -21,6 +22,18 @@ export default function Test() {
     }}>
         <input type="text" id="name" name="name"/>name
         <input type="text" id="age" name="age"/>age
+        <button type="submit">submit</button>
+      </form>
+      <form onSubmit={(e)=>{
+        e.preventDefault();
+        pinJSONToIPFS(document.getElementById("name1").value)
+      .then(result=>{
+        return result.json()
+       
+      }).then(result=>console.log(result)).catch((error)=>console.log("ms",error))
+    }}>
+        <input type="text" id="name1" name="name"/>name
+        <input type="text" id="age1" name="age"/>age
         <button type="submit">submit</button>
       </form>
       <Button onClick={()=>{
