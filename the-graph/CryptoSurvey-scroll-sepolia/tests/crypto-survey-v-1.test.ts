@@ -8,9 +8,9 @@ import {
 } from "matchstick-as/assembly/index"
 import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts"
 import { ApprovalForAll } from "../generated/schema"
-import { ApprovalForAll as ApprovalForAllEvent } from "../generated/CryptoSurvey/CryptoSurvey"
-import { handleApprovalForAll } from "../src/crypto-survey"
-import { createApprovalForAllEvent } from "./crypto-survey-utils"
+import { ApprovalForAll as ApprovalForAllEvent } from "../generated/CryptoSurveyV1/CryptoSurveyV1"
+import { handleApprovalForAll } from "../src/crypto-survey-v-1"
+import { createApprovalForAllEvent } from "./crypto-survey-v-1-utils"
 
 // Tests structure (matchstick-as >=0.5.0)
 // https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0

@@ -13,7 +13,7 @@ import {
   TransferBatch,
   TransferSingle,
   URI
-} from "../generated/CryptoSurvey/CryptoSurvey"
+} from "../generated/CryptoSurveyV1/CryptoSurveyV1"
 
 export function createApprovalForAllEvent(
   account: Address,

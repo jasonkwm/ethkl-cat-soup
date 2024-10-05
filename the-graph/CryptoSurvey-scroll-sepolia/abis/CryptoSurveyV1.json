@@ -517,7 +517,7 @@
           { "internalType": "string", "name": "imageCID", "type": "string" },
           { "internalType": "string", "name": "encryptedCID", "type": "string" }
         ],
-        "internalType": "struct CryptoSurvey.Survey[]",
+        "internalType": "struct CryptoSurveyV1.Survey[]",
         "name": "",
         "type": "tuple[]"
       }
