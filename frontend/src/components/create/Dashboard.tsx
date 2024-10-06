@@ -13,6 +13,7 @@ import { Web3 } from "web3";
 
 type SurveyDetailsType = {
 	pollId: number;
+	encryptedCID: string;
 	surveyId: string;
 	name: string;
 	description: string;

@@ -118,7 +118,8 @@ export default function Replies() {
         console.log("Fetching survey data");
 
       // Step 1: Get encryptedCIDs for both questions and answers
-      let questionsCID = surveyList.map(item => item.encryptedCID);
+			//@ts-ignore
+      let questionsCID = surveyList.map(item => item.encryptedCID?? null);
 
       // Step 2: Download the question data from IPFS using downloadIPFS
       let questionPromises = questionsCID.map(async function(cid) {
@@ -140,9 +141,12 @@ export default function Replies() {
       console.log("in between",QnA)
 
       // Step 5: Collect answer encryptedCID from surveyList
+			//@ts-ignore
       let answersCID = [];
       surveyList.forEach(item => {
+			//@ts-ignore
         if (item.SurveyReply) {
+			//@ts-ignore
           item.SurveyReply.forEach(reply => {
             answersCID.push(reply.encryptedCID);
           });
@@ -150,6 +154,7 @@ export default function Replies() {
       });
 
       // Step 6: Download answer data from IPFS
+			//@ts-ignore
       let answersPromises = answersCID.map(async function(cid) {
         return await downloadIPFS(cid);
       });
@@ -162,6 +167,7 @@ export default function Replies() {
         if (answerObj) {
           let relatedQuestion = QnA.find(q => q.id === answerObj.relatedQuestionId); // Assuming there's a field linking answers to questions
           if (relatedQuestion) {
+			//@ts-ignore
             relatedQuestion.answers.push(answerObj); // Push answers to the correct question
           }
         }
