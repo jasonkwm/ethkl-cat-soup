@@ -3,6 +3,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 
 type SurveyDetailsType = {
   pollId: number;
+	encryptedCID: string;
   name: string;
   description: string;
   image: string;
@@ -13,6 +14,7 @@ type SurveyDetailsType = {
 };
 
 const dummySurvey: SurveyDetailsType[] = [
+			//@ts-ignore
   {
     pollId: 1,
     name: "Customer Satisfaction Survey",
@@ -21,6 +23,7 @@ const dummySurvey: SurveyDetailsType[] = [
     marketReply: 300,
     incentive: 2,
   },
+			//@ts-ignore
   {
     pollId: 2,
     name: "Employee Feedback Survey",
@@ -29,6 +32,7 @@ const dummySurvey: SurveyDetailsType[] = [
     marketReply: 100,
     incentive: 3,
   },
+			//@ts-ignore
   {
     pollId: 3,
     name: "Product Research Survey",
