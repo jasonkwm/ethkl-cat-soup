@@ -13,6 +13,7 @@ import { Web3 } from "web3";
 
 type SurveyDetailsType = {
   pollId: number;
+	surveyId: string;
   name: string;
   description: string;
   image: string;
@@ -90,7 +91,7 @@ const Dashboard = () => {
       <div className="space-y-4">
         {surveyList.length === 0 ? (
           <p>No surveys found.</p>
-        ): surveyList.map((survey: SurveyDetailsType) => (
+        ): surveyList.map((survey: any) => (
           <div
             key={survey.surveyId}
             className="flex justify-between items-center p-4 bg-gray-100 rounded-lg shadow-md "

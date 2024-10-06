@@ -11,6 +11,19 @@ import { useSurveyorContext } from '@/context/SurveyorProvider';
 
 
 // import { useQueryClient } from '@tanstack/react-query';
+type SurveyResponseType = {
+	encryptedCID: string;
+	SurveyReply: {
+		encryptedCID: string;
+		replyAddress: string;
+	}[];
+};
+
+type SurveyDataType = {
+	data: {
+		surveys: SurveyResponseType[];
+	}
+};
 
 const surveyData = [
 	{
@@ -57,11 +70,18 @@ const surveyData = [
 		],
 	},
 ];
+type SurveyQnAType = {
+	question: string;
+	answers: {
+		user: string;
+		answer: string;
+	}[];
+};
 
 export default function Replies() {
-	
+
 	// const [surveyQnA, setSurveyQnA,] = useSurveyorContext();
-	const [surveyQnA, setSurveyQnA,] = useState([]);
+	const [surveyQnA, setSurveyQnA,] = useState<SurveyQnAType[]>([]);
   const { surveyList, setSurveyList, setToggleReplies } = useSurveyorContext();
 	const { web3AuthProvider, web3Auth, publicKey, web3Rpc } = useWeb3AuthContext();
 	const params = useParams()
@@ -73,17 +93,17 @@ export default function Replies() {
 	const contractAbi = CryptoSurvey.abi; // Your contract ABI
 	const contract = new web3.eth.Contract(contractAbi, contractAddress);
 
-	
+
 
 	useEffect(() => {
     const fetchData = async function (){
       console.log("ms",surveyList)
         // console.log("ms",surveyList)
-        // let questionsCID = surveyList.map(item=>item.encryptedCID) 
+        // let questionsCID = surveyList.map(item=>item.encryptedCID)
         // let question = questionsCID.map(async function(item) {return await downloadIPFS(item.encryptedCID)})
-        
+
         // let QnA = question.map(item=>{return {id:item.id,question:item.question, answers:[]} })
-        
+
         // let answersCID = []
         // surveyList.forEach(item=>{if (item.SurveyReplyanswersCID.push(item.SurveyReply)})
         // console.log(answersCID)
@@ -98,11 +118,11 @@ export default function Replies() {
         console.log("Fetching survey data");
 
       // Step 1: Get encryptedCIDs for both questions and answers
-      let questionsCID = surveyList.map(item => item.encryptedCID); 
-      
+      let questionsCID = surveyList.map(item => item.encryptedCID);
+
       // Step 2: Download the question data from IPFS using downloadIPFS
       let questionPromises = questionsCID.map(async function(cid) {
-        return await downloadIPFS(cid); 
+        return await downloadIPFS(cid);
       });
 
       // Step 3: Wait for all question downloads to complete
@@ -113,8 +133,8 @@ export default function Replies() {
 
       // Step 4: Construct QnA object from questions
       let QnA = flattenedQuestionData.map(item => ({
-        id: item.id, 
-        question: item.question, 
+        id: item.id,
+        question: item.question,
         answers: [] // This will be populated later
       }));
       console.log("in between",QnA)
@@ -131,7 +151,7 @@ export default function Replies() {
 
       // Step 6: Download answer data from IPFS
       let answersPromises = answersCID.map(async function(cid) {
-        return await downloadIPFS(cid); 
+        return await downloadIPFS(cid);
       });
 
       // Step 7: Wait for all answer downloads to complete
@@ -149,10 +169,10 @@ export default function Replies() {
 
       console.log("------------------------------------------")
       console.log(QnA);
-        
-  
-      
-     
+
+
+
+
     }
     fetchData()
     // if (!questions) {
