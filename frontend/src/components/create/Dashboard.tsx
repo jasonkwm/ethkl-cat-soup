@@ -47,6 +47,11 @@ const Dashboard = () => {
             description
 						maxReply
 						incentive
+            encryptedCID
+            SurveyReply {
+              encryptedCID
+              replyAddress
+            }
           }
         }`;
 				// console.log(owner)
@@ -114,7 +119,7 @@ const Dashboard = () => {
               </div>
               <div>
                 <img src="email.png" alt="email" style={{ width: "25px", height: "25px" }} />
-                <p className="text-center">{survey.marketReply}</p>
+                <p className="text-center">{survey.maxReply}</p>
               </div>
               <div>
                 <img src="dollar.png" alt="dollar" style={{ width: "25px", height: "25px" }} />
