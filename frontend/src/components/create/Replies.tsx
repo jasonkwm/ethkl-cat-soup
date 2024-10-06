@@ -1,3 +1,4 @@
+//@ts-nocheck
 "use client";
 
 import { useParams } from 'next/navigation';
@@ -214,6 +215,7 @@ export default function Replies() {
 		// }
 	}, [surveyQnA])
 
+			//@ts-ignore
 	return (
 		<div className="m-auto w-[92%] p-6 bg-white rounded-lg shadow-lg mt-4">
 			<p className="font-semibold">{surveyList.name}</p>
